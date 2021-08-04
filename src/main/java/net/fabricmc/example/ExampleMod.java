@@ -8,8 +8,7 @@ import org.apache.logging.log4j.Logger;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 
@@ -33,12 +32,12 @@ public class ExampleMod implements ClientModInitializer {
 
             var entityHit = (EntityHitResult) crosshairTarget;
             var entity = entityHit.getEntity();
-            if (entity.getType() != EntityType.VILLAGER) { // TODO: Support MerchantEntity
+            if (!(entity instanceof MerchantEntity)) {
                 return;
             }
 
-            var villager = (VillagerEntity) entity;
-            villager.getOffers().forEach(o -> logger.info(o.getSellItem().getItem()));
+            var merchant = (MerchantEntity) entity;
+            merchant.getOffers().forEach(o -> logger.info(o.getSellItem().getItem()));
         });
     }
 }
