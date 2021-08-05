@@ -24,20 +24,23 @@ public class ExampleMod implements ClientModInitializer {
         logger.info("Hello Fabric world!");
         ClientTickEvents.END_CLIENT_TICK.register(e -> {
             var mc = MinecraftClient.getInstance();
+            // TODO: more scaler https://fabricmc.net/wiki/tutorial:pixel_raycast
             var crosshairTarget = mc.crosshairTarget;
 
             if (Objects.isNull(crosshairTarget) || crosshairTarget.getType() != Type.ENTITY) {
+                MerchantInfo.clearInfo();
                 return;
             }
 
             var entityHit = (EntityHitResult) crosshairTarget;
             var entity = entityHit.getEntity();
             if (!(entity instanceof MerchantEntity)) {
+                MerchantInfo.clearInfo();
                 return;
             }
 
             var merchant = (MerchantEntity) entity;
-            merchant.getOffers().forEach(o -> logger.info(o.getSellItem().getItem()));
+            MerchantInfo.getInfo().setFromMerchantEntity(merchant);
         });
     }
 }
