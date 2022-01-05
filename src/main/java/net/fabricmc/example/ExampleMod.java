@@ -7,8 +7,11 @@ import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.passive.MerchantEntity;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 
@@ -40,7 +43,10 @@ public class ExampleMod implements ClientModInitializer {
             }
 
             var merchant = (MerchantEntity) entity;
-            MerchantInfo.getInfo().setFromMerchantEntity(merchant);
+
+            ClientPlayNetworking.getSender()
+                    .sendPacket(PlayerInteractEntityC2SPacket.interact(merchant, mc.player.isSneaking(),
+                            Hand.MAIN_HAND));
         });
     }
 }
