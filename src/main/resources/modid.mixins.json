@@ -6,7 +6,9 @@
     "mixins": [],
     "client": [
         "InGameHudMixin",
-        "ReceiveTradeOfferPacket"
+        "ReceiveTradeOfferPacket",
+        "ValidTrade",
+        "CloseScreen"
     ],
     "injectors": {
         "defaultRequire": 1
