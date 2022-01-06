@@ -3,7 +3,7 @@
     "id": "villagertradinglist",
     "version": "${version}",
     "name": "Villager Trading List",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "description": "Focusing on a villager will show a list of trades.",
     "authors": [
         "naari3"
     ],
