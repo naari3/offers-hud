@@ -1,26 +1,26 @@
 {
     "schemaVersion": 1,
-    "id": "modid",
+    "id": "villagertradinglist",
     "version": "${version}",
-    "name": "Example Mod",
+    "name": "Villager Trading List",
     "description": "This is an example description! Tell everyone what your mod is about!",
     "authors": [
-        "Me!"
+        "naari3"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://github.com/naari3/villager-trading-list",
+        "sources": "https://github.com/naari3/villager-trading-list"
     },
     "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
+    "icon": "assets/villagertradinglist/icon.png",
     "environment": "*",
     "entrypoints": {
         "client": [
-            "net.fabricmc.example.ExampleMod"
+            "net.naari3.villagertradinglist.VillagerTradingList"
         ]
     },
     "mixins": [
-        "modid.mixins.json"
+        "villagertradinglist.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.11.3",

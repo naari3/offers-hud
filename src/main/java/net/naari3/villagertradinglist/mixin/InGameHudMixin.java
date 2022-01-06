@@ -1,20 +1,18 @@
-package net.fabricmc.example.mixin;
+package net.naari3.villagertradinglist.mixin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map.Entry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.fabricmc.api.Environment;
-import net.fabricmc.example.MerchantInfo;
+import net.naari3.villagertradinglist.MerchantInfo;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;

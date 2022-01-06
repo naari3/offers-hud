@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package net.naari3.villagertradinglist;
 
 import java.util.ArrayList;
 import java.util.List;
