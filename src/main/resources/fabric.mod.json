@@ -1,6 +1,6 @@
 {
     "schemaVersion": 1,
-    "id": "villagertradinglist",
+    "id": "offerslist",
     "version": "${version}",
     "name": "Villager Trading List",
     "description": "Focusing on a villager will show a list of trades.",
@@ -8,19 +8,19 @@
         "naari3"
     ],
     "contact": {
-        "homepage": "https://github.com/naari3/villager-trading-list",
-        "sources": "https://github.com/naari3/villager-trading-list"
+        "homepage": "https://github.com/naari3/offers-list",
+        "sources": "https://github.com/naari3/offers-list"
     },
     "license": "CC0-1.0",
-    "icon": "assets/villagertradinglist/icon.png",
+    "icon": "assets/offerslist/icon.png",
     "environment": "*",
     "entrypoints": {
         "client": [
-            "net.naari3.villagertradinglist.VillagerTradingList"
+            "net.naari3.offerslist.OffersList"
         ]
     },
     "mixins": [
-        "villagertradinglist.mixins.json"
+        "offerslist.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.11.3",

@@ -1,4 +1,4 @@
-package net.naari3.villagertradinglist.mixin;
+package net.naari3.offerslist.mixin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.fabricmc.api.Environment;
-import net.naari3.villagertradinglist.MerchantInfo;
+import net.naari3.offerslist.MerchantInfo;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;

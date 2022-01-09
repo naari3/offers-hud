@@ -1,4 +1,4 @@
-package net.naari3.villagertradinglist;
+package net.naari3.offerslist;
 
 import java.util.Objects;
 
@@ -18,8 +18,8 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.village.VillagerProfession;
 
-public class VillagerTradingList implements ClientModInitializer {
-    public static final Logger logger = LogManager.getLogger("villagertradinglist");
+public class OffersList implements ClientModInitializer {
+    public static final Logger logger = LogManager.getLogger("offerslist");
     public static boolean openWindow = false;
 
     @Override
@@ -49,7 +49,7 @@ public class VillagerTradingList implements ClientModInitializer {
     }
 
     private Entity getUpdatableEntity(MinecraftClient mc) {
-        if (VillagerTradingList.getOpenWindow()) {
+        if (OffersList.getOpenWindow()) {
             return null;
         }
 
@@ -76,10 +76,10 @@ public class VillagerTradingList implements ClientModInitializer {
     }
 
     public static boolean getOpenWindow() {
-        return VillagerTradingList.openWindow;
+        return OffersList.openWindow;
     }
 
     public static void setOpenWindow(boolean newValue) {
-        VillagerTradingList.openWindow = newValue;
+        OffersList.openWindow = newValue;
     }
 }

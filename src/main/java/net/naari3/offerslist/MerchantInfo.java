@@ -1,4 +1,4 @@
-package net.naari3.villagertradinglist;
+package net.naari3.offerslist;
 
 import java.util.ArrayList;
 import java.util.List;
