@@ -43,24 +43,22 @@ public abstract class InGameHudMixin {
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, HandledScreen.BACKGROUND_TEXTURE);
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
-            var offers = MerchantInfo.getInfo().offers.iterator();
+            var offers = MerchantInfo.getInfo().getOffers();
             var i = 0;
-            while (offers.hasNext()) {
-                var offer = offers.next();
+            for (TradeOffer offer : offers) {
+                var baseX = 5;
+                var baseY = 5 + i * 20;
 
-                var x = 0;
-                var y = 5;
+                itemRenderer.renderInGui(offer.getOriginalFirstBuyItem(), baseX, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getOriginalFirstBuyItem(), baseX, baseY);
 
-                itemRenderer.renderInGui(offer.getOriginalFirstBuyItem(), x + 5, y + i * 20);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getOriginalFirstBuyItem(), x + 5, y + i * 20);
+                itemRenderer.renderInGui(offer.getSecondBuyItem(), baseX + 20, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSecondBuyItem(), baseX + 20, baseY);
 
-                itemRenderer.renderInGui(offer.getSecondBuyItem(), x + 25, y + i * 20);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSecondBuyItem(), x + 25, y + i * 20);
+                itemRenderer.renderInGui(offer.getSellItem(), baseX + 53, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSellItem(), baseX + 53, baseY);
 
-                itemRenderer.renderInGui(offer.getSellItem(), x + 58, y + i * 20);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSellItem(), x + 58, y + i * 20);
-
-                this.renderArrow(matrices, offer, x + -15, y + i * 20);
+                this.renderArrow(matrices, offer, baseX + -20, baseY);
 
                 List<String> enchantments = new ArrayList<>();
 
@@ -70,7 +68,7 @@ public abstract class InGameHudMixin {
                     enchantments.add(entry.getKey().getName(entry.getValue()).getString());
                 }
 
-                textRenderer.drawWithShadow(matrices, String.join(", ", enchantments), (x + 80), (y + 5 + i * 20),
+                textRenderer.drawWithShadow(matrices, String.join(", ", enchantments), (baseX + 75), (baseY + 5),
                         0xFFFFFF);
                 i += 1;
             }

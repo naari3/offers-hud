@@ -17,10 +17,14 @@ public class MerchantInfo {
     private Integer lastId;
 
     @NotNull
-    public List<TradeOffer> offers = new ArrayList<>();
+    private List<TradeOffer> offers = new ArrayList<>();
 
     public static MerchantInfo getInfo() {
         return info;
+    }
+
+    public List<TradeOffer> getOffers() {
+        return this.offers;
     }
 
     public void setOffers(TradeOfferList offerlist) {
