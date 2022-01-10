@@ -103,7 +103,7 @@ jobs:
         uses: itsmeow/curseforge-upload@v3
         with:
           token: ${{ secrets.CF_API_TOKEN }}
-          project_id: 349239
+          project_id: 566138
           game_endpoint: minecraft
           file_path: build/libs/${{ steps.findjar.outputs.jarname }}
           changelog_type: markdown
