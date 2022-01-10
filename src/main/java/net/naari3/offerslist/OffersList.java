@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
@@ -67,9 +68,16 @@ public class OffersList implements ClientModInitializer {
         }
 
         var merchant = (MerchantEntity) entity;
-        if (entity instanceof VillagerEntity villager
-                && villager.getVillagerData().getProfession() == VillagerProfession.NONE) {
-            return null;
+        if (entity instanceof VillagerEntity villager) {
+            if (villager.getVillagerData().getProfession() == VillagerProfession.NONE) {
+                return null;
+            }
+
+            var player = mc.player;
+            var item = player.getMainHandStack();
+            if (item.isOf(Items.VILLAGER_SPAWN_EGG)) {
+                return null;
+            }
         }
 
         return merchant;
