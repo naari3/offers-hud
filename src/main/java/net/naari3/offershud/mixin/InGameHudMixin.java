@@ -82,11 +82,11 @@ public abstract class InGameHudMixin {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         if (tradeOffer.isDisabled()) {
-            DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 256,
-                    512);
+            DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512,
+                    256);
         } else {
-            DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 256,
-                    512);
+            DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512,
+                    256);
         }
 
     }
