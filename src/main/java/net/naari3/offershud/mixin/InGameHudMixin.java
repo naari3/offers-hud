@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import net.fabricmc.api.Environment;
 import net.naari3.offershud.MerchantInfo;
+import net.naari3.offershud.OffersHUD;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
@@ -28,7 +29,7 @@ import net.minecraft.util.Identifier;
 @Mixin(InGameHud.class)
 @Environment(EnvType.CLIENT)
 public abstract class InGameHudMixin {
-    private static final Identifier TEXTURE = new Identifier("textures/gui/container/villager2.png");
+    private static final Identifier TEXTURE = new Identifier(OffersHUD.MODID, "textures/gui/container/villager2.png");
 
     @Inject(at = @At("HEAD"), method = "renderStatusEffectOverlay")
     public void renderStatusEffectOverlay(MatrixStack matrices, CallbackInfo ci) {
