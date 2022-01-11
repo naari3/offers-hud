@@ -1,11 +1,11 @@
-package net.naari3.offerslist.mixin;
+package net.naari3.offershud.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.naari3.offerslist.OffersList;
+import net.naari3.offershud.OffersHUD;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.MerchantEntity;
@@ -27,6 +27,6 @@ abstract class ValidTrade {
         if (merchant.getOffers().isEmpty()) {
             return;
         }
-        OffersList.setOpenWindow(true);
+        OffersHUD.setOpenWindow(true);
     }
 }

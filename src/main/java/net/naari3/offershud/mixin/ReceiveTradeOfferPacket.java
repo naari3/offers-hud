@@ -1,12 +1,12 @@
-package net.naari3.offerslist.mixin;
+package net.naari3.offershud.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.naari3.offerslist.OffersList;
-import net.naari3.offerslist.MerchantInfo;
+import net.naari3.offershud.OffersHUD;
+import net.naari3.offershud.MerchantInfo;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
@@ -19,7 +19,7 @@ abstract class ReceiveTradeOfferPacket {
     @Inject(at = @At("HEAD"), method = "onSetTradeOffers", cancellable = true)
     public void onSetTradeOffers(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
         MerchantInfo.getInfo().setOffers(packet.getOffers());
-        if (!OffersList.getOpenWindow()) {
+        if (!OffersHUD.getOpenWindow()) {
             ci.cancel();
         }
     }
@@ -28,7 +28,7 @@ abstract class ReceiveTradeOfferPacket {
     public void onOpenScreen(OpenScreenS2CPacket packet, CallbackInfo ci) {
         var type = packet.getScreenHandlerType();
 
-        if (!OffersList.getOpenWindow() && type == ScreenHandlerType.MERCHANT) {
+        if (!OffersHUD.getOpenWindow() && type == ScreenHandlerType.MERCHANT) {
             ci.cancel();
             ClientPlayNetworking.getSender()
                     .sendPacket(new CloseHandledScreenC2SPacket(packet.getSyncId()));

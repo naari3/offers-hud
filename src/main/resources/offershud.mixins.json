@@ -1,7 +1,7 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "net.naari3.offerslist.mixin",
+    "package": "net.naari3.offershud.mixin",
     "compatibilityLevel": "JAVA_16",
     "mixins": [],
     "client": [

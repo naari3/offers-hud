@@ -1,4 +1,4 @@
-package net.naari3.offerslist;
+package net.naari3.offershud;
 
 import java.util.ArrayList;
 import java.util.List;
