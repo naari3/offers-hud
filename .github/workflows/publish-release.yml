@@ -13,6 +13,7 @@ jobs:
       curse-versions: ${{ steps.properties.outputs.release-curse-versions }}
       matrix-exclude-branch: ${{ steps.processmatrix.outputs.matrix-to-exclude }}
       extra-branch-name: ${{ steps.properties.outputs.release-extra-branch-name }}
+      extra-branch-minecraft-version: ${{ steps.properties.outputs.release-extra-minecraft-version }}
       extra-branch-curse-version: ${{ steps.properties.outputs.release-extra-curse-version }}
     steps:
       - name: Checkout the sources
@@ -29,7 +30,7 @@ jobs:
         id: properties
         run: | # From christian-draeger/read-properties, using the action makes it extremely messy until christian-draeger/read-properties#2
           path='./gradle.properties'
-          for property in mod_version minecraft_version release-curse-versions release-extra-branch release-extra-branch-name release-extra-curse-version
+          for property in mod_version minecraft_version release-curse-versions release-extra-branch release-extra-branch-name release-extra-minecraft-version release-extra-curse-version
           do
             result=$(sed -n "/^[[:space:]]*$property[[:space:]]*=[[:space:]]*/s/^[[:space:]]*$property[[:space:]]*=[[:space:]]*//p" "$path")
             echo "$property: $result"
@@ -55,7 +56,7 @@ jobs:
         run: |
           if ${{ matrix.branch == 'Snapshots'}}; then
             echo "::set-output name=branchname::${{ needs.Get-Properties.outputs.extra-branch-name }}"
-            echo "::set-output name=version::${{ needs.Get-Properties.outputs.extra-branch-curse-version }}"
+            echo "::set-output name=version::${{ needs.Get-Properties.outputs.extra-branch-minecraft-version }}"
             echo "::set-output name=curse-versions::${{ needs.Get-Properties.outputs.extra-branch-curse-version }}"
           else
             echo "::set-output name=version::${{ needs.Get-Properties.outputs.minecraft-version }}"
