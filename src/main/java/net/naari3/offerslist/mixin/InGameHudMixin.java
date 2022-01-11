@@ -49,8 +49,8 @@ public abstract class InGameHudMixin {
                 var baseX = 5;
                 var baseY = 5 + i * 20;
 
-                itemRenderer.renderInGui(offer.getOriginalFirstBuyItem(), baseX, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getOriginalFirstBuyItem(), baseX, baseY);
+                itemRenderer.renderInGui(offer.getAdjustedFirstBuyItem(), baseX, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getAdjustedFirstBuyItem(), baseX, baseY);
 
                 itemRenderer.renderInGui(offer.getSecondBuyItem(), baseX + 20, baseY);
                 itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSecondBuyItem(), baseX + 20, baseY);
