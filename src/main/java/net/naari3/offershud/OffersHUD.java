@@ -20,7 +20,8 @@ import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.village.VillagerProfession;
 
 public class OffersHUD implements ClientModInitializer {
-    public static final Logger logger = LogManager.getLogger("offershud");
+    public static final String MODID = "offershud";
+    public static final Logger logger = LogManager.getLogger(MODID);
     public static boolean openWindow = false;
 
     @Override
