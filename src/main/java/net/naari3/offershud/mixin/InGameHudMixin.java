@@ -46,18 +46,26 @@ public abstract class InGameHudMixin {
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
             var offers = MerchantInfo.getInfo().getOffers();
             var i = 0;
+
             for (TradeOffer offer : offers) {
                 var baseX = 5;
                 var baseY = 5 + i * 20;
 
-                itemRenderer.renderInGui(offer.getAdjustedFirstBuyItem(), baseX, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getAdjustedFirstBuyItem(), baseX, baseY);
+                var firstBuy = offer.getAdjustedFirstBuyItem().copy();
+                var secondBuy = offer.getSecondBuyItem().copy();
+                var sell = offer.getSellItem().copy();
 
-                itemRenderer.renderInGui(offer.getSecondBuyItem(), baseX + 20, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSecondBuyItem(), baseX + 20, baseY);
+                itemRenderer.renderInGui(firstBuy, baseX, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, firstBuy, baseX, baseY,
+                        firstBuy.getCount() == 1 ? "1" : null);
 
-                itemRenderer.renderInGui(offer.getSellItem(), baseX + 53, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, offer.getSellItem(), baseX + 53, baseY);
+                itemRenderer.renderInGui(secondBuy, baseX + 20, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, secondBuy, baseX + 20, baseY,
+                        secondBuy.getCount() == 1 ? "1" : null);
+
+                itemRenderer.renderInGui(sell, baseX + 53, baseY);
+                itemRenderer.renderGuiItemOverlay(textRenderer, sell, baseX + 53, baseY,
+                        sell.getCount() == 1 ? "1" : null);
 
                 this.renderArrow(matrices, offer, baseX + -20, baseY);
 
