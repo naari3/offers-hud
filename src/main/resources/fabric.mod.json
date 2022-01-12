@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "id": "offershud",
     "version": "${version}",
-    "name": "Villager Trading List",
+    "name": "OffersHUD",
     "description": "Focusing on a villager will show a list of trades.",
     "authors": [
         "naari3"
