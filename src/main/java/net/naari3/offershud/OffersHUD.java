@@ -70,7 +70,8 @@ public class OffersHUD implements ClientModInitializer {
 
         var merchant = (MerchantEntity) entity;
         if (entity instanceof VillagerEntity villager) {
-            if (villager.getVillagerData().getProfession() == VillagerProfession.NONE) {
+            var profession = villager.getVillagerData().getProfession();
+            if (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT) {
                 return null;
             }
 
