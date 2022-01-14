@@ -9,11 +9,15 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import me.shedaniel.autoconfig.AutoConfig;
+
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.fabricmc.api.Environment;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
+import net.naari3.offershud.config.ModConfig;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
@@ -33,6 +37,11 @@ public abstract class InGameHudMixin {
 
     @Inject(at = @At("HEAD"), method = "renderStatusEffectOverlay")
     public void renderStatusEffectOverlay(MatrixStack matrices, CallbackInfo ci) {
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+
+        if (!config.enabled)
+            return;
+
         final var client = MinecraftClient.getInstance();
         final var player = client.player;
         if (player == null)
