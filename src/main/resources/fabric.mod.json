@@ -17,6 +17,9 @@
     "entrypoints": {
         "client": [
             "net.naari3.offershud.OffersHUD"
+        ],
+        "modmenu": [
+            "net.naari3.offershud.config.ModMenuIntegration"
         ]
     },
     "mixins": [
