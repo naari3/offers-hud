@@ -1,10 +1,13 @@
 package net.naari3.offershud;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -18,14 +21,19 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.village.VillagerProfession;
+import net.naari3.offershud.config.ModConfig;
 
 public class OffersHUD implements ClientModInitializer {
     public static final String MODID = "offershud";
     public static final Logger logger = LogManager.getLogger(MODID);
     public static boolean openWindow = false;
+    private static ModConfig config;
 
     @Override
     public void onInitializeClient() {
+        AutoConfig.register(ModConfig.class, Toml4jConfigSerializer::new);
+        config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+
         logger.info("Hello Fabric world!");
         var mc = MinecraftClient.getInstance();
 
@@ -37,6 +45,7 @@ public class OffersHUD implements ClientModInitializer {
                     return;
                 }
 
+                MerchantInfo.getInfo().setOffers(new ArrayList<>());
                 MerchantInfo.getInfo().setLastId(entity.getId());
 
                 ClientPlayNetworking.getSender()
@@ -71,7 +80,8 @@ public class OffersHUD implements ClientModInitializer {
         var merchant = (MerchantEntity) entity;
         if (entity instanceof VillagerEntity villager) {
             var profession = villager.getVillagerData().getProfession();
-            if (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT) {
+            if (config.ignoreNoProfession
+                    && (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT)) {
                 return null;
             }
 

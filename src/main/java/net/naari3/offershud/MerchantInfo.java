@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOfferList;
 
 public class MerchantInfo {
     private static MerchantInfo info = new MerchantInfo();
@@ -27,7 +26,7 @@ public class MerchantInfo {
         return this.offers;
     }
 
-    public void setOffers(TradeOfferList offerlist) {
+    public void setOffers(List<TradeOffer> offerlist) {
         this.offers = offerlist;
     }
 
