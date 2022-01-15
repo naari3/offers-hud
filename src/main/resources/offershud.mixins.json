@@ -8,7 +8,9 @@
         "InGameHudMixin",
         "ReceiveTradeOfferPacket",
         "ValidTrade",
-        "CloseScreen"
+        "CloseScreen",
+        "NoRolling",
+        "NoRollingSound"
     ],
     "injectors": {
         "defaultRequire": 1
