@@ -37,7 +37,7 @@ public abstract class InGameHudMixin {
 
     @Inject(at = @At("HEAD"), method = "renderStatusEffectOverlay")
     public void renderStatusEffectOverlay(MatrixStack matrices, CallbackInfo ci) {
-        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         if (!config.enabled)
             return;

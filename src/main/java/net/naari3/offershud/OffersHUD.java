@@ -38,6 +38,8 @@ public class OffersHUD implements ClientModInitializer {
         var mc = MinecraftClient.getInstance();
 
         ClientTickEvents.END_WORLD_TICK.register(e -> {
+            if (!config.enabled)
+                return;
             var entity = this.getUpdatableEntity(mc);
             if (entity != null) {
                 if (MerchantInfo.getInfo().getLastId().isPresent()

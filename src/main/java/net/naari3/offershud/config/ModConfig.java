@@ -8,4 +8,5 @@ import net.naari3.offershud.OffersHUD;
 public class ModConfig implements ConfigData {
     public boolean enabled = true;
     public boolean ignoreNoProfession = true;
+    public boolean suppressVillagerHeadRolling = false;
 }

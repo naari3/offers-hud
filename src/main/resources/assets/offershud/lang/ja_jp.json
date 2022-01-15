@@ -1,5 +1,6 @@
 {
     "text.autoconfig.offershud.title": "Offers HUD",
     "text.autoconfig.offershud.option.enabled": "有効",
-    "text.autoconfig.offershud.option.ignoreNoProfession": "無職を無視する"
+    "text.autoconfig.offershud.option.ignoreNoProfession": "無職を無視する",
+    "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "村人の首振りを抑制する"
 }
