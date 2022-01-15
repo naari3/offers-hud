@@ -9,7 +9,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.passive.MerchantEntity;
-import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
 
 @Mixin(MerchantEntity.class)

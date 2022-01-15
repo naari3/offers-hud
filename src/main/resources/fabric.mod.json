@@ -32,6 +32,6 @@
         "java": ">=16"
     },
     "suggests": {
-        "another-mod": "*"
+        "modmenu": "*"
     }
 }
