@@ -11,7 +11,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
 
 @Mixin(Entity.class)
