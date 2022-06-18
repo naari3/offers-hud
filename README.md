@@ -36,3 +36,7 @@ You will need to add **modmenu** for the configurations.
 - Villagers will no longer do head rolling when interacting, even if no profession villagers.
   - Mainly for `Ignore villagers who do not have a profession: false`
 - default: **false**
+
+## Special Thanks
+
+- @javascriptjp has done a great job with version 1.19!
