@@ -28,7 +28,8 @@ jobs:
           fi
       - name: Read relevant fields from gradle.properties
         id: properties
-        run: | # From christian-draeger/read-properties, using the action makes it extremely messy until christian-draeger/read-properties#2
+        run:
+          | # From christian-draeger/read-properties, using the action makes it extremely messy until christian-draeger/read-properties#2
           path='./gradle.properties'
           for property in mod_version minecraft_version release-curse-versions release-extra-branch release-extra-branch-name release-extra-minecraft-version release-extra-curse-version
           do
@@ -69,7 +70,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 17
       - name: Cache Gradle packages
         uses: actions/cache@v2
@@ -110,8 +111,16 @@ jobs:
           changelog_type: markdown
           changelog: ${{ github.event.release.body }}
           display_name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
-          game_versions: 7499,4458,${{ steps.getbranchinfo.outputs.curse-versions }} #Fabric,Java 8,[version (s) for the branch]
+          game_versions: 7499,8326,${{ steps.getbranchinfo.outputs.curse-versions }} #Fabric,Java 17,[version (s) for the branch]
           release_type: ${{ needs.Get-Properties.outputs.release-type }}
+      - uses: Kir-Antipov/mc-publish@v3.0
+        with:
+          # You don't need this section if you don't want to publish
+          # your assets to Modrinth
+          display_name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          changelog: ${{ github.event.release.body }}
+          loaders: fabric
       - name: Ask Gradle to publish
         run: ./gradlew publish
       - name: Save publish folder in action's artifacts # Remove when automated

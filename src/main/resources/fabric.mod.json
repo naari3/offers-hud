@@ -1,37 +1,36 @@
 {
-    "schemaVersion": 1,
-    "id": "offershud",
-    "version": "${version}",
-    "name": "OffersHUD",
-    "description": "Focusing on a villager will show a list of trades.",
-    "authors": [
-        "naari3"
-    ],
-    "contact": {
-        "homepage": "https://github.com/naari3/offers-hud",
-        "sources": "https://github.com/naari3/offers-hud"
-    },
-    "license": "MIT",
-    "icon": "assets/offershud/icon.png",
-    "environment": "*",
-    "entrypoints": {
-        "client": [
-            "net.naari3.offershud.OffersHUD"
-        ],
-        "modmenu": [
-            "net.naari3.offershud.config.ModMenuIntegration"
-        ]
-    },
-    "mixins": [
-        "offershud.mixins.json"
-    ],
-    "depends": {
-        "fabricloader": ">=0.14.6",
-        "fabric": "*",
-        "minecraft": "~1.19",
-        "java": ">=17"
-    },
-    "suggests": {
-        "modmenu": "*"
+  "schemaVersion": 1,
+  "id": "offershud",
+  "version": "${version}",
+  "name": "OffersHUD",
+  "description": "Focusing on a villager will show a list of trades.",
+  "authors": ["naari3"],
+  "contact": {
+    "homepage": "https://github.com/naari3/offers-hud",
+    "sources": "https://github.com/naari3/offers-hud"
+  },
+  "license": "MIT",
+  "icon": "assets/offershud/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": ["net.naari3.offershud.OffersHUD"],
+    "modmenu": ["net.naari3.offershud.config.ModMenuIntegration"]
+  },
+  "mixins": ["offershud.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17",
+    "cloth-config": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "mc-publish": {
+      "modrinth": "Z35dS3OT",
+      "curseforge": 566138
     }
+  }
 }
