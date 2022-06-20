@@ -4,7 +4,17 @@ OffersHUD is a client-side mod which display a list of villager's trading offers
 
 ![show offers](./docs/2022-01-10_08.00.13.png)
 
-## Required
+## Installation
+
+### Download
+
+The latest releases of OffersHUD are published to these services.
+
+- [Modrinth](https://modrinth.com/mod/offershud)
+- [GitHub Release](https://github.com/naari3/offers-hud/releases)
+- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/offershud)
+
+### Required other mods
 
 Install the latest version for suitable Minecraft versions.
 

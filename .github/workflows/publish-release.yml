@@ -81,8 +81,6 @@ jobs:
             ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
-      - name: Grant execute permission to gradlew
-        run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
       - name: Find correct JAR
