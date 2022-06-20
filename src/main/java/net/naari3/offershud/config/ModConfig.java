@@ -11,4 +11,5 @@ public class ModConfig implements ConfigData {
     public boolean suppressVillagerHeadRolling = false;
     public int offsetX = 5;
     public int offsetY = 5;
+    public float scale = 1.0f;
 }

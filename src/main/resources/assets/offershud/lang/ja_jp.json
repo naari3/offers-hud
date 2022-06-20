@@ -4,5 +4,6 @@
   "text.autoconfig.offershud.option.ignoreNoProfession": "無職を無視する",
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "村人の首振りを抑制する",
   "text.autoconfig.offershud.option.offsetX": "HUDのオフセット: X",
-  "text.autoconfig.offershud.option.offsetY": "HUDのオフセット: Y"
+  "text.autoconfig.offershud.option.offsetY": "HUDのオフセット: Y",
+  "text.autoconfig.offershud.option.scale": "HUDの倍率(大きさ)"
 }
