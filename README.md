@@ -4,6 +4,14 @@ OffersHUD is a client-side mod which display a list of villager's trading offers
 
 ![show offers](./docs/2022-01-10_08.00.13.png)
 
+## Required
+
+Install the latest version for suitable Minecraft versions.
+
+- [Cloth Config API](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
+- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
+  - This is optional but recommended for configuration features.
+
 ## Features
 
 ### Main
