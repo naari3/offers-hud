@@ -52,13 +52,27 @@ public abstract class InGameHudMixin {
 
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, HandledScreen.BACKGROUND_TEXTURE);
+
+        // Touch directly the static variable matrices, not the matrices passed as
+        // arguments.
+        // This is like touching a global variable directly, which I feel is not a good
+        // move because we do not know the scope of the effect, but it was necessary in
+        // order to affect methods that do not have matrices as arguments,
+        // such as `itemRenderer.renderInGui`.
+        var modelMatrices = RenderSystem.getModelViewStack();
+        modelMatrices.push();
+        modelMatrices.translate(config.offsetX, config.offsetY, 1.0);
+        modelMatrices.push();
+        modelMatrices.scale(config.scale, config.scale, 1.0f);
+        RenderSystem.applyModelViewMatrix();
+
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
             var offers = MerchantInfo.getInfo().getOffers();
             var i = 0;
 
             for (TradeOffer offer : offers) {
-                var baseX = config.offsetX;
-                var baseY = config.offsetY + i * 20;
+                var baseX = 0;
+                var baseY = 0 + i * 20;
 
                 var firstBuy = offer.getAdjustedFirstBuyItem().copy();
                 var secondBuy = offer.getSecondBuyItem().copy();
@@ -91,6 +105,10 @@ public abstract class InGameHudMixin {
                 i += 1;
             }
         });
+
+        modelMatrices.pop();
+        modelMatrices.pop();
+        RenderSystem.applyModelViewMatrix();
     }
 
     // from MerchantScreen
