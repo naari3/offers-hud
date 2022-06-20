@@ -57,8 +57,8 @@ public abstract class InGameHudMixin {
             var i = 0;
 
             for (TradeOffer offer : offers) {
-                var baseX = 5;
-                var baseY = 5 + i * 20;
+                var baseX = config.offsetX;
+                var baseY = config.offsetY + i * 20;
 
                 var firstBuy = offer.getAdjustedFirstBuyItem().copy();
                 var secondBuy = offer.getSecondBuyItem().copy();

@@ -1,6 +1,8 @@
 {
-    "text.autoconfig.offershud.title": "Offers HUD",
-    "text.autoconfig.offershud.option.enabled": "Enabled",
-    "text.autoconfig.offershud.option.ignoreNoProfession": "Ignore villagers who do not have a profession",
-    "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling"
+  "text.autoconfig.offershud.title": "Offers HUD",
+  "text.autoconfig.offershud.option.enabled": "Enabled",
+  "text.autoconfig.offershud.option.ignoreNoProfession": "Ignore villagers who do not have a profession",
+  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling",
+  "text.autoconfig.offershud.option.offsetX": "Offset of HUD: X",
+  "text.autoconfig.offershud.option.offsetY": "Offset of HUD: Y"
 }
