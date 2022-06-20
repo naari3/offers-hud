@@ -75,7 +75,10 @@ jobs:
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
-          path: ~/.gradle/caches
+          path: |
+            ~/.gradle/loom-cache
+            ~/.gradle/wrapper
+            ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Grant execute permission to gradlew
@@ -101,28 +104,19 @@ jobs:
           asset_path: build/libs/${{ steps.findjar.outputs.jarname }}
           asset_name: ${{ steps.findjar.outputs.jarname }}
           asset_content_type: application/java-archive
-      - name: Upload to Curseforge
-        uses: itsmeow/curseforge-upload@v3
+      - name: Publish to Curseforge and Modrinth
+        uses: Kir-Antipov/mc-publish@v3.0
         with:
-          token: ${{ secrets.CF_API_TOKEN }}
-          project_id: 566138
-          game_endpoint: minecraft
-          file_path: build/libs/${{ steps.findjar.outputs.jarname }}
-          changelog_type: markdown
-          changelog: ${{ github.event.release.body }}
-          display_name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
-          game_versions: 7499,8326,${{ steps.getbranchinfo.outputs.curse-versions }} #Fabric,Java 17,[version (s) for the branch]
-          release_type: ${{ needs.Get-Properties.outputs.release-type }}
-      - uses: Kir-Antipov/mc-publish@v3.0
-        with:
-          # You don't need this section if you don't want to publish
-          # your assets to Modrinth
-          display_name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
+          name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           changelog: ${{ github.event.release.body }}
-          loaders: fabric
-      - name: Ask Gradle to publish
-        run: ./gradlew publish
+          version-type: ${{ needs.Get-Properties.outputs.release-type }}
+          loaders: |
+            fabric
+          java: |
+            17
       - name: Save publish folder in action's artifacts # Remove when automated
         uses: actions/upload-artifact@v2
         with:
