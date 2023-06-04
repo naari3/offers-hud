@@ -78,17 +78,14 @@ public abstract class InGameHudMixin {
                 var secondBuy = offer.getSecondBuyItem().copy();
                 var sell = offer.getSellItem().copy();
 
-                itemRenderer.renderInGui(firstBuy, baseX, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, firstBuy, baseX, baseY,
-                        firstBuy.getCount() == 1 ? "1" : null);
+                itemRenderer.renderInGui(matrices, firstBuy, baseX, baseY);
+                itemRenderer.renderGuiItemOverlay(matrices, textRenderer, firstBuy, baseX, baseY);
 
-                itemRenderer.renderInGui(secondBuy, baseX + 20, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, secondBuy, baseX + 20, baseY,
-                        secondBuy.getCount() == 1 ? "1" : null);
+                itemRenderer.renderInGui(matrices, secondBuy, baseX + 20, baseY);
+                itemRenderer.renderGuiItemOverlay(matrices, textRenderer, secondBuy, baseX + 20, baseY);
 
-                itemRenderer.renderInGui(sell, baseX + 53, baseY);
-                itemRenderer.renderGuiItemOverlay(textRenderer, sell, baseX + 53, baseY,
-                        sell.getCount() == 1 ? "1" : null);
+                itemRenderer.renderInGui(matrices, sell, baseX + 53, baseY);
+                itemRenderer.renderGuiItemOverlay(matrices, textRenderer, sell, baseX + 53, baseY);
 
                 this.renderArrow(matrices, offer, baseX + -20, baseY);
 
@@ -114,7 +111,7 @@ public abstract class InGameHudMixin {
     // from MerchantScreen
     private void renderArrow(MatrixStack matrices, TradeOffer tradeOffer, int x, int y) {
         RenderSystem.enableBlend();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         if (tradeOffer.isDisabled()) {
             DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512,
