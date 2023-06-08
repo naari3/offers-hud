@@ -89,7 +89,7 @@ public class OffersHUD implements ClientModInitializer {
 
             var player = mc.player;
             var item = player.getMainHandStack();
-            if (item.isOf(Items.VILLAGER_SPAWN_EGG)) {
+            if (item.isOf(Items.VILLAGER_SPAWN_EGG) || item.isOf(Items.NAME_TAG)) {
                 return null;
             }
         }
