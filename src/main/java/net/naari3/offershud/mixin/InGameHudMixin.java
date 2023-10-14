@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.gui.DrawContext;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,10 +21,8 @@ import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
 import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -36,7 +35,7 @@ public abstract class InGameHudMixin {
     private static final Identifier TEXTURE = new Identifier(OffersHUD.MODID, "textures/gui/container/villager2.png");
 
     @Inject(at = @At("HEAD"), method = "renderStatusEffectOverlay")
-    public void renderStatusEffectOverlay(MatrixStack matrices, CallbackInfo ci) {
+    public void renderStatusEffectOverlay(DrawContext context, CallbackInfo ci) {
         var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         if (!config.enabled)
@@ -78,16 +77,16 @@ public abstract class InGameHudMixin {
                 var secondBuy = offer.getSecondBuyItem().copy();
                 var sell = offer.getSellItem().copy();
 
-                itemRenderer.renderInGui(matrices, firstBuy, baseX, baseY);
-                itemRenderer.renderGuiItemOverlay(matrices, textRenderer, firstBuy, baseX, baseY);
+                context.drawItem(firstBuy, baseX, baseY);
+                context.drawItemInSlot(textRenderer, firstBuy, baseX, baseY);
 
-                itemRenderer.renderInGui(matrices, secondBuy, baseX + 20, baseY);
-                itemRenderer.renderGuiItemOverlay(matrices, textRenderer, secondBuy, baseX + 20, baseY);
+                context.drawItem(secondBuy, baseX + 20, baseY);
+                context.drawItemInSlot(textRenderer, secondBuy, baseX + 20, baseY);
 
-                itemRenderer.renderInGui(matrices, sell, baseX + 53, baseY);
-                itemRenderer.renderGuiItemOverlay(matrices, textRenderer, sell, baseX + 53, baseY);
+                context.drawItem(sell, baseX + 53, baseY);
+                context.drawItemInSlot(textRenderer, sell, baseX + 53, baseY);
 
-                this.renderArrow(matrices, offer, baseX + -20, baseY);
+                this.renderArrow(context, offer, baseX + -20, baseY);
 
                 List<String> enchantments = new ArrayList<>();
 
@@ -97,7 +96,7 @@ public abstract class InGameHudMixin {
                     enchantments.add(entry.getKey().getName(entry.getValue()).getString());
                 }
 
-                textRenderer.drawWithShadow(matrices, String.join(", ", enchantments), (baseX + 75), (baseY + 5),
+                context.drawTextWithShadow(textRenderer, String.join(", ", enchantments), (baseX + 75), (baseY + 5),
                         0xFFFFFF);
                 i += 1;
             }
@@ -109,15 +108,12 @@ public abstract class InGameHudMixin {
     }
 
     // from MerchantScreen
-    private void renderArrow(MatrixStack matrices, TradeOffer tradeOffer, int x, int y) {
-        RenderSystem.enableBlend();
-        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+    private void renderArrow(DrawContext context, TradeOffer tradeOffer, int x, int y) {
         if (tradeOffer.isDisabled()) {
-            DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512,
+            context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512,
                     256);
         } else {
-            DrawableHelper.drawTexture(matrices, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512,
+            context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512,
                     256);
         }
 
