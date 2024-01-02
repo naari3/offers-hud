@@ -23,7 +23,6 @@ import net.fabricmc.api.EnvType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.village.TradeOffer;
@@ -47,7 +46,7 @@ public abstract class InGameHudMixin {
             return;
 
         final var textRenderer = client.textRenderer;
-        final var itemRenderer = client.getItemRenderer();
+        // final var itemRenderer = client.getItemRenderer();
 
         RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, HandledScreen.BACKGROUND_TEXTURE);
