@@ -40,6 +40,11 @@ public class OffersHUD implements ClientModInitializer {
         ClientTickEvents.END_WORLD_TICK.register(e -> {
             if (!config.enabled)
                 return;
+            // If the player is in a screen, do nothing.
+            // this fixes #35 (The screen closes when a villager crosses the crosshair)
+            // see: https://github.com/naari3/offers-hud/issues/35
+            if (mc.currentScreen != null)
+                return;
             var entity = this.getUpdatableEntity(mc);
             if (entity != null) {
                 if (MerchantInfo.getInfo().getLastId().isPresent()
