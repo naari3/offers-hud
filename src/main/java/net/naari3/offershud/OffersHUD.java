@@ -11,6 +11,7 @@ import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.MerchantEntity;
@@ -22,6 +23,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult.Type;
 import net.minecraft.village.VillagerProfession;
 import net.naari3.offershud.config.ModConfig;
+import net.naari3.offershud.renderer.OffersHUDRenderer;
 
 public class OffersHUD implements ClientModInitializer {
     public static final String MODID = "offershud";
@@ -62,8 +64,9 @@ public class OffersHUD implements ClientModInitializer {
             } else {
                 MerchantInfo.getInfo().setLastId(null);
             }
-
         });
+
+        HudRenderCallback.EVENT.register(new OffersHUDRenderer());
     }
 
     private Entity getUpdatableEntity(MinecraftClient mc) {
