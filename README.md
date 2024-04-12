@@ -31,8 +31,6 @@ When you focus on a villager with profession (or wandering trader), the offers w
 This can be very useful, for example, for carefully selecting the details of a villager's trading offers.
 You don't have to right-click on the villager every time you reposition the job site block.
 
-This uses `InGameHud#renderStatusEffectOverlay` and will not work correctly if there is a mod that cancels this method.
-
 ### Configurations (required modmenu)
 
 You will need to add **modmenu** for the configurations.
