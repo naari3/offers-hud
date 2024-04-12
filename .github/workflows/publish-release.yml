@@ -103,7 +103,7 @@ jobs:
           asset_name: ${{ steps.findjar.outputs.jarname }}
           asset_content_type: application/java-archive
       - name: Publish to Curseforge and Modrinth
-        uses: Kir-Antipov/mc-publish@v3.0
+        uses: Kir-Antipov/mc-publish@v3
         with:
           name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
