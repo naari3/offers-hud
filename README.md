@@ -18,6 +18,7 @@ The latest releases of OffersHUD are published to these services.
 
 Install the latest version for suitable Minecraft versions.
 
+- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 - [Cloth Config API](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
 - [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
   - This is optional but recommended for configuration features.
