@@ -2,7 +2,6 @@ package net.naari3.offershud.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -11,7 +10,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffer;
@@ -54,8 +52,8 @@ public class OffersHUDRenderer implements HudRenderCallback {
                 var baseX = 0;
                 var baseY = 0 + i * 20;
 
-                var firstBuy = offer.getAdjustedFirstBuyItem().copy();
-                var secondBuy = offer.getSecondBuyItem().copy();
+                var firstBuy = offer.getDisplayedFirstBuyItem().copy();
+                var secondBuy = offer.getDisplayedSecondBuyItem().copy();
                 var sell = offer.getSellItem().copy();
 
                 context.drawItem(firstBuy, baseX, baseY);
@@ -71,10 +69,13 @@ public class OffersHUDRenderer implements HudRenderCallback {
 
                 List<String> enchantments = new ArrayList<>();
 
-                var map = EnchantmentHelper.get(offer.getSellItem());
-
-                for (Entry<Enchantment, Integer> entry : map.entrySet()) {
-                    enchantments.add(entry.getKey().getName(entry.getValue()).getString());
+                var itemEnchantmentsComponent = EnchantmentHelper.getEnchantments(offer.getSellItem());
+                if (EnchantmentHelper.hasEnchantments(offer.getSellItem())) {
+                    for (var entry : itemEnchantmentsComponent.getEnchantmentsMap()) {
+                        var enchantment = entry.getKey().value();
+                        var level = entry.getIntValue();
+                        enchantments.add(enchantment.getName(level).getString());
+                    }
                 }
 
                 context.drawTextWithShadow(textRenderer, String.join(", ", enchantments), (baseX + 75), (baseY + 5),
