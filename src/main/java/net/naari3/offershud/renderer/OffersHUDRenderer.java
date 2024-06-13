@@ -10,6 +10,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffer;
@@ -18,9 +20,10 @@ import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
 
 public class OffersHUDRenderer implements HudRenderCallback {
-    private static final Identifier TEXTURE = new Identifier(OffersHUD.MODID, "textures/gui/container/villager2.png");
+    private static final Identifier TEXTURE = Identifier.of(OffersHUD.MODID, "textures/gui/container/villager2.png");
 
-    public void onHudRender(DrawContext context, float tickDelta) {
+    @Override
+    public void onHudRender(DrawContext context, RenderTickCounter tickCounter) {
         var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         if (!config.enabled)
@@ -71,10 +74,9 @@ public class OffersHUDRenderer implements HudRenderCallback {
 
                 var itemEnchantmentsComponent = EnchantmentHelper.getEnchantments(offer.getSellItem());
                 if (EnchantmentHelper.hasEnchantments(offer.getSellItem())) {
-                    for (var entry : itemEnchantmentsComponent.getEnchantmentsMap()) {
-                        var enchantment = entry.getKey().value();
+                    for (var entry : itemEnchantmentsComponent.getEnchantmentEntries()) {
                         var level = entry.getIntValue();
-                        enchantments.add(enchantment.getName(level).getString());
+                        enchantments.add(Enchantment.getName(entry.getKey(), level).getString());
                     }
                 }
 
