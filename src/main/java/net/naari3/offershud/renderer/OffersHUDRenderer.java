@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -45,7 +46,7 @@ public class OffersHUDRenderer implements HudRenderCallback {
         modelMatrices.translate(config.offsetX, config.offsetY, 1.0);
         modelMatrices.push();
         modelMatrices.scale(config.scale, config.scale, 1.0f);
-        RenderSystem.applyModelViewMatrix();
+        // RenderSystem.applyModelViewMatrix();
 
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
             var offers = MerchantInfo.getInfo().getOffers();
@@ -60,13 +61,13 @@ public class OffersHUDRenderer implements HudRenderCallback {
                 var sell = offer.getSellItem().copy();
 
                 context.drawItem(firstBuy, baseX, baseY);
-                context.drawItemInSlot(textRenderer, firstBuy, baseX, baseY);
+                context.drawStackOverlay(textRenderer, firstBuy, baseX, baseY);
 
                 context.drawItem(secondBuy, baseX + 20, baseY);
-                context.drawItemInSlot(textRenderer, secondBuy, baseX + 20, baseY);
+                context.drawStackOverlay(textRenderer, secondBuy, baseX + 20, baseY);
 
                 context.drawItem(sell, baseX + 53, baseY);
-                context.drawItemInSlot(textRenderer, sell, baseX + 53, baseY);
+                context.drawStackOverlay(textRenderer, sell, baseX + 53, baseY);
 
                 this.renderArrow(context, offer, baseX + -20, baseY);
 
@@ -93,11 +94,18 @@ public class OffersHUDRenderer implements HudRenderCallback {
     // from MerchantScreen
     private void renderArrow(DrawContext context, TradeOffer tradeOffer, int x, int y) {
         if (tradeOffer.isDisabled()) {
-            context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512,
-                    256);
+            context.drawTexture(
+                    RenderLayer::getGuiTextured, TEXTURE,
+                    x + 5 + 35 + 20, y + 3,
+                    25.0F, 171.0F,
+                    10, 9,
+                    512, 256);
         } else {
-            context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512,
-                    256);
+            context.drawTexture(
+                    RenderLayer::getGuiTextured, TEXTURE,
+                    x + 5 + 35 + 20, y + 3,
+                    15.0F, 171.0F, 10, 9,
+                    512, 256);
         }
     }
 }
