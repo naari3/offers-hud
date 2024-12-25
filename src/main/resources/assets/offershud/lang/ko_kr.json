@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.offershud.title": "Offers HUD",
+  "text.autoconfig.offershud.option.enabled": "켜짐",
+  "text.autoconfig.offershud.option.ignoreNoProfession": "직업이 없는 주민 무시",
+  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "주민의 고개 흔들기 억제",
+  "text.autoconfig.offershud.option.offsetX": "HUD 오프셋: X",
+  "text.autoconfig.offershud.option.offsetY": "HUD 오프셋: Y",
+  "text.autoconfig.offershud.option.scale": "HUD 규모"
+}
