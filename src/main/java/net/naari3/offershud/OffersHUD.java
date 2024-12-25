@@ -3,6 +3,7 @@ package net.naari3.offershud;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,10 +58,12 @@ public class OffersHUD implements ClientModInitializer {
                 MerchantInfo.getInfo().setOffers(new ArrayList<>());
                 MerchantInfo.getInfo().setLastId(entity.getId());
 
-                ClientPlayNetworking.getSender()
-                        .sendPacket(PlayerInteractEntityC2SPacket.interact(entity,
-                                mc.player.isSneaking(),
-                                Hand.MAIN_HAND));
+                if (mc.player != null) {
+                    ClientPlayNetworking.getSender()
+                            .sendPacket(PlayerInteractEntityC2SPacket.interact(entity,
+                                    mc.player.isSneaking(),
+                                    Hand.MAIN_HAND));
+                }
             } else {
                 MerchantInfo.getInfo().setLastId(null);
             }
@@ -83,11 +86,10 @@ public class OffersHUD implements ClientModInitializer {
 
         var entityHit = (EntityHitResult) crosshairTarget;
         var entity = entityHit.getEntity();
-        if (!(entity instanceof MerchantEntity)) {
+        if (!(entity instanceof MerchantEntity merchant)) {
             return null;
         }
 
-        var merchant = (MerchantEntity) entity;
         if (entity instanceof VillagerEntity villager) {
             var profession = villager.getVillagerData().getProfession();
             if (config.ignoreNoProfession
@@ -96,9 +98,12 @@ public class OffersHUD implements ClientModInitializer {
             }
 
             var player = mc.player;
-            var item = player.getMainHandStack();
-            if (item.isOf(Items.VILLAGER_SPAWN_EGG) || item.isOf(Items.NAME_TAG)) {
-                return null;
+            ItemStack item = null;
+            if (player != null) {
+                item = player.getMainHandStack();
+                if (item.isOf(Items.VILLAGER_SPAWN_EGG) || item.isOf(Items.NAME_TAG)) {
+                    return null;
+                }
             }
         }
 
