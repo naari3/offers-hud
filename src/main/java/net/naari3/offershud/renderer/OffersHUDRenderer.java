@@ -46,7 +46,8 @@ public class OffersHUDRenderer implements HudRenderCallback {
         modelMatrices.translate(config.offsetX, config.offsetY, 1.0);
         modelMatrices.push();
         modelMatrices.scale(config.scale, config.scale, 1.0f);
-        // RenderSystem.applyModelViewMatrix();
+        //? if <1.21.3
+        /*RenderSystem.applyModelViewMatrix();*/
 
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
             var offers = MerchantInfo.getInfo().getOffers();
@@ -61,13 +62,25 @@ public class OffersHUDRenderer implements HudRenderCallback {
                 var sell = offer.getSellItem().copy();
 
                 context.drawItem(firstBuy, baseX, baseY);
+                //? if >=1.21.3 {
                 context.drawStackOverlay(textRenderer, firstBuy, baseX, baseY);
+                //?} elif <1.21.3 {
+                 /*context.drawItemInSlot(textRenderer, firstBuy, baseX, baseY); 
+                *///?}
 
                 context.drawItem(secondBuy, baseX + 20, baseY);
+                //? if >=1.21.3 {
                 context.drawStackOverlay(textRenderer, secondBuy, baseX + 20, baseY);
+                //?} elif <1.21.3 {
+                 /*context.drawItemInSlot(textRenderer, secondBuy, baseX + 20, baseY); 
+                *///?}
 
                 context.drawItem(sell, baseX + 53, baseY);
+                //? if >=1.21.3 {
                 context.drawStackOverlay(textRenderer, sell, baseX + 53, baseY);
+                //?} elif <1.21.3 {
+                 /*context.drawItemInSlot(textRenderer, sell, baseX + 53, baseY); 
+                *///?}
 
                 this.renderArrow(context, offer, baseX + -20, baseY);
 
@@ -94,18 +107,26 @@ public class OffersHUDRenderer implements HudRenderCallback {
     // from MerchantScreen
     private void renderArrow(DrawContext context, TradeOffer tradeOffer, int x, int y) {
         if (tradeOffer.isDisabled()) {
+            //? if >=1.21.3 {
             context.drawTexture(
                     RenderLayer::getGuiTextured, TEXTURE,
                     x + 5 + 35 + 20, y + 3,
                     25.0F, 171.0F,
                     10, 9,
                     512, 256);
+            //?} elif <1.21.3 {
+             /*context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512, 256); 
+            *///?}
         } else {
+            //? if >=1.21.3 {
             context.drawTexture(
                     RenderLayer::getGuiTextured, TEXTURE,
                     x + 5 + 35 + 20, y + 3,
                     15.0F, 171.0F, 10, 9,
                     512, 256);
+            //?} elif <1.21.3 {
+             /*context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512, 256); 
+            *///?}
         }
     }
 }

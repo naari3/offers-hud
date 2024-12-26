@@ -20,12 +20,12 @@
   "depends": {
     "fabricloader": ">=0.14.8",
     "fabric-api": "*",
-    "minecraft": "~1.21",
-    "java": ">=21",
-    "cloth-config": "*"
+    "minecraft": "${mc_dep_version}",
+    "java": ">=21"
   },
   "suggests": {
-    "modmenu": "*"
+    "modmenu": "*",
+    "cloth-config": "*"
   },
   "custom": {
     "mc-publish": {

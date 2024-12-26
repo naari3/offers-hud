@@ -20,33 +20,53 @@ repositories {
 
 dependencies {
     // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    minecraft "com.mojang:minecraft:${stonecutter.current.project}"
+    mappings "net.fabricmc:yarn:${property('yarn_mappings')}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${property('loader_version')}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${property('fabric_version')}"
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")  {
+    modImplementation("com.terraformersmc:modmenu:${property('modmenu_version')}")  {
         exclude module: 'fabric-api'
     }
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${property('cloth_config_version')}") {
         exclude module: 'fabric-api'
     }
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "version", stonecutter.current.version
+    /*
+    This snippet extracts major and minor parts from a Minecraft version (e.g. "1.20.1")
+    and creates a broader version string like "1.20.x" to accommodate minor updates.
+
+    - `def (major, minor, patch) = mcVersion.split('\\.')` splits by '.', setting patch to null if absent (e.g. "1.20").
+    - "1.21.x" helps ensure compatibility with minor patches such as "1.21.3" or "1.21.4".
+    */
+    def (major, minor) = stonecutter.current.version.tokenize(".")
+    inputs.property "mc_dep_version", "${major}.${minor}.x"
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": stonecutter.current.version
+        expand "mc_dep_version": "${major}.${minor}.x"
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    def java = stonecutter.eval(stonecutter.current.version, ">=1.20.5")
+            ? 21 : 17
+
+    it.options.release = java
+}
+
+loom {
+    runConfigs.all {
+        ideConfigGenerated true // Run configurations are not created for subprojects by default
+        runDir "../../run" // Use a shared run folder and create separate worlds
+    }
 }
 
 java {
@@ -54,9 +74,11 @@ java {
     // if it is present.
     // If you remove this line, sources will not be generated.
     withSourcesJar()
+    def java = stonecutter.eval(stonecutter.current.version, ">=1.20.5")
+            ? JavaVersion.VERSION_21 : JavaVersion.VERSION_17
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = java
+    targetCompatibility = java
 }
 
 jar {
