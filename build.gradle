@@ -46,12 +46,17 @@ processResources {
     - `def (major, minor, patch) = mcVersion.split('\\.')` splits by '.', setting patch to null if absent (e.g. "1.20").
     - "1.21.x" helps ensure compatibility with minor patches such as "1.21.3" or "1.21.4".
     */
-    def (major, minor) = stonecutter.current.version.tokenize(".")
-    inputs.property "mc_dep_version", "${major}.${minor}.x"
+    def mcVersion = stonecutter.current.project
+    def (major, minor) = mcVersion.tokenize(".")
+    def mcDepVersion = "${major}.${minor}.x"
+
+    inputs.property "mc_dep_version", mcDepVersion
 
     filesMatching("fabric.mod.json") {
-        expand "version": stonecutter.current.version
-        expand "mc_dep_version": "${major}.${minor}.x"
+        expand([
+                "version": mcVersion,
+                "mc_dep_version": mcDepVersion,
+        ])
     }
 }
 
