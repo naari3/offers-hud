@@ -76,7 +76,7 @@ jobs:
       - name: Publish to Curseforge and Modrinth
         uses: Kir-Antipov/mc-publish@v3
         with:
-          name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }} for ${{ steps.getbranchinfo.outputs.version }}
+          name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
