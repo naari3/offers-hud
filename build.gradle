@@ -4,8 +4,11 @@ plugins {
 }
 
 archivesBaseName = project.archives_base_name
-version = project.minecraft_version+'-'+project.mod_version
+version = project.mod_version+'+'+stonecutter.current.version
 group = project.maven_group
+
+def javaInt = stonecutter.eval(stonecutter.current.version, ">=1.20.5")
+        ? 21 : 17
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
@@ -38,33 +41,27 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", stonecutter.current.version
-    /*
-    This snippet extracts major and minor parts from a Minecraft version (e.g. "1.20.1")
-    and creates a broader version string like "1.20.x" to accommodate minor updates.
-
-    - `def (major, minor, patch) = mcVersion.split('\\.')` splits by '.', setting patch to null if absent (e.g. "1.20").
-    - "1.21.x" helps ensure compatibility with minor patches such as "1.21.3" or "1.21.4".
-    */
-    def mcVersion = stonecutter.current.project
-    def (major, minor) = mcVersion.tokenize(".")
-    def mcDepVersion = "${major}.${minor}.x"
-
+    def mcDepVersion = project.minecraft_deps
+    inputs.property "version", version
     inputs.property "mc_dep_version", mcDepVersion
+    inputs.property "java_version", javaInt
 
+    def vars =[
+            "version": version,
+            "mc_dep_version": mcDepVersion,
+            "java_version": javaInt
+    ];
     filesMatching("fabric.mod.json") {
-        expand([
-                "version": mcVersion,
-                "mc_dep_version": mcDepVersion,
-        ])
+        expand(vars)
+    }
+
+    filesMatching("offershud.mixins.json") {
+        expand(vars)
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    def java = stonecutter.eval(stonecutter.current.version, ">=1.20.5")
-            ? 21 : 17
-
-    it.options.release = java
+    it.options.release = javaInt
 }
 
 loom {
@@ -79,11 +76,11 @@ java {
     // if it is present.
     // If you remove this line, sources will not be generated.
     withSourcesJar()
-    def java = stonecutter.eval(stonecutter.current.version, ">=1.20.5")
+    def javaObj = stonecutter.eval(stonecutter.current.version, ">=1.20.5")
             ? JavaVersion.VERSION_21 : JavaVersion.VERSION_17
 
-    sourceCompatibility = java
-    targetCompatibility = java
+    sourceCompatibility = javaObj
+    targetCompatibility = javaObj
 }
 
 jar {
