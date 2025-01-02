@@ -78,7 +78,6 @@ jobs:
         with:
           name: OffersHUD v${{ needs.Get-Properties.outputs.mod-version }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          curseforge-token: ${{ secrets.CF_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           changelog: ${{ github.event.release.body }}
           version-type: ${{ needs.Get-Properties.outputs.release-type }}
