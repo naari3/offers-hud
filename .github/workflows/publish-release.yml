@@ -85,3 +85,4 @@ jobs:
             fabric
           java: |
             21
+          files: ${{ steps.findjar.outputs.jar_files }}
