@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.village.Merchant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +16,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
@@ -86,7 +86,7 @@ public class OffersHUD implements ClientModInitializer {
 
         var entityHit = (EntityHitResult) crosshairTarget;
         var entity = entityHit.getEntity();
-        if (!(entity instanceof MerchantEntity merchant)) {
+        if (!(entity instanceof Merchant)) {
             return null;
         }
 
@@ -107,7 +107,7 @@ public class OffersHUD implements ClientModInitializer {
             }
         }
 
-        return merchant;
+        return entity;
     }
 
     public static boolean getOpenWindow() {

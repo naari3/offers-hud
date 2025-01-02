@@ -1,5 +1,7 @@
 package net.naari3.offershud.mixin;
 
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.MerchantScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +20,8 @@ import net.minecraft.screen.ScreenHandlerType;
 abstract class ReceiveTradeOfferPacket {
     @Inject(at = @At("HEAD"), method = "onSetTradeOffers", cancellable = true)
     public void onSetTradeOffers(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
-        MerchantInfo.getInfo().setOffers(packet.getOffers());
+        var offers = packet.getOffers();
+        MerchantInfo.getInfo().setOffers(offers);
         if (!OffersHUD.getOpenWindow()) {
             ci.cancel();
         }
@@ -28,7 +31,9 @@ abstract class ReceiveTradeOfferPacket {
     public void onOpenScreen(OpenScreenS2CPacket packet, CallbackInfo ci) {
         var type = packet.getScreenHandlerType();
 
-        if (!OffersHUD.getOpenWindow() && type == ScreenHandlerType.MERCHANT) {
+        var instance = type.create(99999, new PlayerInventory(null));
+
+        if (!OffersHUD.getOpenWindow() && instance instanceof MerchantScreenHandler) {
             ci.cancel();
             ClientPlayNetworking.getSender()
                     .sendPacket(new CloseHandledScreenC2SPacket(packet.getSyncId()));
