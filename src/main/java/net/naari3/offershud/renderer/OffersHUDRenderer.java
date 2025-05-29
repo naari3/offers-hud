@@ -46,8 +46,10 @@ public class OffersHUDRenderer implements HudRenderCallback {
         final var textRenderer = client.textRenderer;
         // final var itemRenderer = client.getItemRenderer();
 
-        RenderSystem.enableBlend();
+        /*? if < 1.21.5 {*/
+        /*RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, HandledScreen.BACKGROUND_TEXTURE);
+        *//*?}*/
 
         var modelMatrices = context.getMatrices();
         modelMatrices.push();
