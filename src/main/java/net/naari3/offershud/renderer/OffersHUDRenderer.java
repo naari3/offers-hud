@@ -8,19 +8,23 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffer;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
 import org.joml.Matrix3x2f;
+
+/*? if >= 1.21.6 {*/
+import net.minecraft.client.gl.RenderPipelines;
+/*?}*/
 
 public class OffersHUDRenderer implements HudRenderCallback {
     private static final Identifier TEXTURE =
@@ -145,7 +149,6 @@ public class OffersHUDRenderer implements HudRenderCallback {
                         /*?} else {*/
                          /*enchantments.add(enchantment.getName(level).getString());
                         *//*?}*/
-
                     }
                 }
                 /*?} else {*/
@@ -157,8 +160,7 @@ public class OffersHUDRenderer implements HudRenderCallback {
                 }
                 *//*?}*/
 
-                context.drawTextWithShadow(textRenderer, String.join(", ", enchantments), (baseX + 75), (baseY + 5),
-                        0xFFFFFF);
+                context.drawTextWithShadow(textRenderer, String.join(", ", enchantments), (baseX + 75), (baseY + 5), Colors.WHITE);
                 i += 1;
             }
         });
