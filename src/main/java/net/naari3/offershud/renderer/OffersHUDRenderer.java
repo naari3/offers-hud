@@ -192,8 +192,8 @@ public class OffersHUDRenderer implements HudRenderCallback {
                     x + 5 + 35 + 20, y + 3,
                     25.0F, 171.0F,
                     10, 9,
-                    512, 256);*/
-            //?} elif <1.21.3 {
+                    512, 256);
+            *///?} elif <1.21.3 {
              /*context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512, 256);
             *///?}
         } else {
@@ -209,8 +209,8 @@ public class OffersHUDRenderer implements HudRenderCallback {
                     RenderLayer::getGuiTextured, TEXTURE,
                     x + 5 + 35 + 20, y + 3,
                     15.0F, 171.0F, 10, 9,
-                    512, 256);*/
-            //?} elif <1.21.3 {
+                    512, 256);
+            *///?} elif <1.21.3 {
              /*context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512, 256);
             *///?}
         }
