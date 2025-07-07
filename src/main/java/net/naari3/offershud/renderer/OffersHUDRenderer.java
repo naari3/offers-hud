@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.RenderLayer;
@@ -19,6 +20,7 @@ import net.minecraft.village.TradeOffer;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
+import org.joml.Matrix3x2f;
 
 public class OffersHUDRenderer implements HudRenderCallback {
     private static final Identifier TEXTURE =
@@ -52,10 +54,32 @@ public class OffersHUDRenderer implements HudRenderCallback {
         *//*?}*/
 
         var modelMatrices = context.getMatrices();
-        modelMatrices.push();
-        modelMatrices.translate(config.offsetX, config.offsetY, 1.0);
-        modelMatrices.push();
-        modelMatrices.scale(config.scale, config.scale, 1.0f);
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.pushMatrix();
+        /*?} else {*/
+        /*modelMatrices.push();
+         *//*?}*/;
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.translate(config.offsetX, config.offsetY, new Matrix3x2f(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+        /*?} else {*/
+        /*modelMatrices.translate(config.offsetX, config.offsetY, 1.0);
+         *//*?}*/;
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.pushMatrix();
+        /*?} else {*/
+        /*modelMatrices.push();
+         *//*?}*/;
+
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.scale(config.scale, config.scale, new Matrix3x2f(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+        /*?} else {*/
+        /*modelMatrices.scale(config.scale, config.scale, 1.0f);
+         *//*?}*/;
+
         //? if <1.21.3
         /*RenderSystem.applyModelViewMatrix();*/
 
@@ -139,30 +163,53 @@ public class OffersHUDRenderer implements HudRenderCallback {
             }
         });
 
-        modelMatrices.pop();
-        modelMatrices.pop();
+        /*? if >= 1.21.6 {*/
+        modelMatrices.popMatrix();
+        /*?} else {*/
+        /*modelMatrices.pop();
+         *//*?}*/;
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.popMatrix();
+        /*?} else {*/
+        /*modelMatrices.pop();
+         *//*?}*/;
     }
 
     // from MerchantScreen
     private void renderArrow(DrawContext context, TradeOffer tradeOffer, int x, int y) {
         if (tradeOffer.isDisabled()) {
-            //? if >=1.21.3 {
+            //? if >=1.21.6 {
             context.drawTexture(
-                    RenderLayer::getGuiTextured, TEXTURE,
+                    RenderPipelines.GUI_TEXTURED, TEXTURE,
                     x + 5 + 35 + 20, y + 3,
                     25.0F, 171.0F,
                     10, 9,
                     512, 256);
+            //?} elif >=1.21.3 {
+            /*context.drawTexture(
+                    RenderLayer::getGuiTextured, TEXTURE,
+                    x + 5 + 35 + 20, y + 3,
+                    25.0F, 171.0F,
+                    10, 9,
+                    512, 256);*/
             //?} elif <1.21.3 {
              /*context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 25.0F, 171.0F, 10, 9, 512, 256);
             *///?}
         } else {
-            //? if >=1.21.3 {
+            //? if >=1.21.6 {
             context.drawTexture(
+                    RenderPipelines.GUI_TEXTURED, TEXTURE,
+                    x + 5 + 35 + 20, y + 3,
+                    15.0F, 171.0F,
+                    10, 9,
+                    512, 256);
+            //?} elif >=1.21.3 {
+            /*context.drawTexture(
                     RenderLayer::getGuiTextured, TEXTURE,
                     x + 5 + 35 + 20, y + 3,
                     15.0F, 171.0F, 10, 9,
-                    512, 256);
+                    512, 256);*/
             //?} elif <1.21.3 {
              /*context.drawTexture(TEXTURE, x + 5 + 35 + 20, y + 3, 0, 15.0F, 171.0F, 10, 9, 512, 256);
             *///?}
