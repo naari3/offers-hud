@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.village.Merchant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,11 +92,19 @@ public class OffersHUD implements ClientModInitializer {
         }
 
         if (entity instanceof VillagerEntity villager) {
-            var profession = villager.getVillagerData().getProfession();
+            /*? if >= 1.21.5 {*/
+            RegistryEntry<VillagerProfession> professionEntry = villager.getVillagerData().profession();
+            if (config.ignoreNoProfession
+                    && (Objects.equals(professionEntry.getIdAsString(), VillagerProfession.NONE.getValue().toString()) || Objects.equals(professionEntry.getIdAsString(), VillagerProfession.NITWIT.getValue().toString()))) {
+                return null;
+            }
+            /*?} else {*/
+            /*var profession = villager.getVillagerData().getProfession();
             if (config.ignoreNoProfession
                     && (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT)) {
                 return null;
             }
+            *//*?}*/
 
             var player = mc.player;
             ItemStack item = null;
