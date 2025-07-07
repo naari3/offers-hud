@@ -32,7 +32,7 @@ abstract class ReceiveTradeOfferPacket {
     public void onOpenScreen(OpenScreenS2CPacket packet, CallbackInfo ci) {
         var type = packet.getScreenHandlerType();
 
-        /* if >= 1.21.5 {*/
+        /*? if >= 1.21.5 {*/
         if (!OffersHUD.getOpenWindow() && type == ScreenHandlerType.MERCHANT) {
             ci.cancel();
             ClientPlayNetworking.getSender()

@@ -92,7 +92,7 @@ public class OffersHUD implements ClientModInitializer {
         }
 
         if (entity instanceof VillagerEntity villager) {
-            /* if >= 1.21.5 {*/
+            /*? if >= 1.21.5 {*/
             RegistryEntry<VillagerProfession> professionEntry = villager.getVillagerData().profession();
             if (config.ignoreNoProfession
                     && (Objects.equals(professionEntry.getIdAsString(), VillagerProfession.NONE.getValue().toString()) || Objects.equals(professionEntry.getIdAsString(), VillagerProfession.NITWIT.getValue().toString()))) {
