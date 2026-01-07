@@ -23,9 +23,6 @@ abstract class ReceiveTradeOfferPacket {
     public void onSetTradeOffers(SetTradeOffersS2CPacket packet, CallbackInfo ci) {
         var offers = packet.getOffers();
         MerchantInfo.getInfo().setOffers(offers);
-        if (!OffersHUD.getOpenWindow()) {
-            ci.cancel();
-        }
     }
 
     @Inject(at = @At("HEAD"), method = "onOpenScreen", cancellable = true)
