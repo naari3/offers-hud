@@ -66,7 +66,7 @@ public class OffersHUDRenderer implements HudRenderCallback {
          *//*?}*/;
 
         /*? if >= 1.21.6 {*/
-        modelMatrices.translate(config.offsetX, config.offsetY, new Matrix3x2f(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+        modelMatrices.translate(config.offsetX, config.offsetY);
         /*?} else {*/
         /*modelMatrices.translate(config.offsetX, config.offsetY, 1.0);
          *//*?}*/;
@@ -79,7 +79,7 @@ public class OffersHUDRenderer implements HudRenderCallback {
 
 
         /*? if >= 1.21.6 {*/
-        modelMatrices.scale(config.scale, config.scale, new Matrix3x2f(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
+        modelMatrices.scale(config.scale, config.scale);
         /*?} else {*/
         /*modelMatrices.scale(config.scale, config.scale, 1.0f);
          *//*?}*/;
