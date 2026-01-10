@@ -1,6 +1,6 @@
 package net.naari3.offershud.mixin;
 
-import net.minecraft.village.Merchant;
+import net.minecraft.world.item.trading.Merchant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
@@ -8,18 +8,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 
-@Mixin(ClientPlayerInteractionManager.class)
+@Mixin(MultiPlayerGameMode.class)
 abstract class ValidTrade {
 
-    // ClientPlayerInteractionManager
-    @Inject(at = @At("HEAD"), method = "interactEntity")
-    public void interactEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
+    // MultiPlayerGameMode
+    @Inject(at = @At("HEAD"), method = "interact")
+    public void interact(Player player, Entity entity, InteractionHand hand, CallbackInfoReturnable<InteractionResult> ci) {
         if (!(entity instanceof Merchant)) {
             return;
         }

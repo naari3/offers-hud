@@ -6,12 +6,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.naari3.offershud.OffersHUD;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 
-@Mixin(ClientPlayerEntity.class)
+@Mixin(LocalPlayer.class)
 abstract class CloseScreen {
-    @Inject(at = @At("HEAD"), method = "closeHandledScreen")
-    public void closeHandledScreen(CallbackInfo ci) {
+    @Inject(at = @At("HEAD"), method = "closeContainer")
+    public void closeContainer(CallbackInfo ci) {
         OffersHUD.setOpenWindow(false);
     }
 }
