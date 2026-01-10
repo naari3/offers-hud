@@ -1,14 +1,10 @@
 pluginManagement {
     repositories {
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'NeoForge'
-            url = 'https://maven.neoforged.net/releases'
-        }
+        mavenCentral()
         gradlePluginPortal()
+        maven { name = 'Fabric'; url = 'https://maven.fabricmc.net/' }
+        maven { name = 'Shedaniel'; url = 'https://maven.shedaniel.me/' }
+        maven { name = 'NeoForge'; url = 'https://maven.neoforged.net/releases' }
     }
 }
 

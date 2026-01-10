@@ -54,11 +54,13 @@ public class OffersHUD implements ClientModInitializer {
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         logger.info("Hello from OffersHUD!");
-        var mc = Minecraft.getInstance();
         var platform = Platform.getInstance();
 
         platform.registerClientTickHandler(() -> {
             if (!config.enabled)
+                return;
+            var mc = Minecraft.getInstance();
+            if (mc == null)
                 return;
             // If the player is in a screen, do nothing.
             // this fixes #35 (The screen closes when a villager crosses the crosshair)
