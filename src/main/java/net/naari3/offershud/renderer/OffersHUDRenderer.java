@@ -6,7 +6,9 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import me.shedaniel.autoconfig.AutoConfig;
+//? if fabric {
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -28,13 +30,17 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.config.ModConfig;
-import org.joml.Matrix3x2f;
+import net.naari3.offershud.platform.Platform;
 
 /*? if >= 1.21.6 {*/
 import net.minecraft.client.renderer.RenderPipelines;
 /*?}*/
 
-public class OffersHUDRenderer implements HudRenderCallback {
+//? if fabric {
+public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRenderer {
+//?} else {
+/*public class OffersHUDRenderer implements Platform.HudRenderer {
+*//*?}*/
     /*? if >= 1.21.11 {*/
     private static final Identifier TEXTURE =
         Identifier.fromNamespaceAndPath(OffersHUD.MODID, "textures/gui/container/villager2.png");
@@ -48,10 +54,25 @@ public class OffersHUDRenderer implements HudRenderCallback {
 
 
     /*? if >=1.21 {*/
+    //? if fabric {
     @Override
     public void onHudRender(GuiGraphics context, DeltaTracker tickCounter) {
+        render(context, tickCounter);
+    }
+    //?}
+
+    @Override
+    public void render(GuiGraphics context, DeltaTracker tickCounter) {
     /*?} else {*/
-     /*public void onHudRender(GuiGraphics context, float tickDelta) {
+    /*//? if fabric {
+    @Override
+    public void onHudRender(GuiGraphics context, float tickDelta) {
+        render(context, tickDelta);
+    }
+    //?}
+
+    @Override
+    public void render(GuiGraphics context, float tickDelta) {
     *//*?}*/
         var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
@@ -114,25 +135,13 @@ public class OffersHUDRenderer implements HudRenderCallback {
                 var sell = offer.getResult().copy();
 
                 context.renderItem(firstBuy, baseX, baseY);
-                //? if >=1.21.3 {
                 context.renderItemDecorations(textRenderer, firstBuy, baseX, baseY);
-                //?} elif <1.21.3 {
-                 /*context.renderItemDecorations(textRenderer, firstBuy, baseX, baseY);
-                *///?}
 
                 context.renderItem(secondBuy, baseX + 20, baseY);
-                //? if >=1.21.3 {
                 context.renderItemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
-                //?} elif <1.21.3 {
-                 /*context.renderItemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
-                *///?}
 
                 context.renderItem(sell, baseX + 53, baseY);
-                //? if >=1.21.3 {
                 context.renderItemDecorations(textRenderer, sell, baseX + 53, baseY);
-                //?} elif <1.21.3 {
-                 /*context.renderItemDecorations(textRenderer, sell, baseX + 53, baseY);
-                *///?}
 
                 this.renderArrow(context, offer, baseX + -20, baseY);
 

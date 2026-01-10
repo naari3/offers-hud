@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.naari3.offershud.OffersHUD;
 import net.naari3.offershud.MerchantInfo;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.naari3.offershud.platform.Platform;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
@@ -32,16 +32,16 @@ abstract class ReceiveTradeOfferPacket {
         /*? if >= 1.21.5 {*/
         if (!OffersHUD.getOpenWindow() && type == MenuType.MERCHANT) {
             ci.cancel();
-            ClientPlayNetworking.getSender()
-                    .sendPacket(new ServerboundContainerClosePacket(packet.getContainerId()));
+            Platform.getInstance().sendPacketToServer(
+                    new ServerboundContainerClosePacket(packet.getContainerId()));
         }
         /*?} else {*/
         /*var instance = type.create(Integer.MAX_VALUE, new Inventory(Minecraft.getInstance().player));
 
         if (!OffersHUD.getOpenWindow() && instance instanceof MerchantMenu) {
             ci.cancel();
-            ClientPlayNetworking.getSender()
-                    .sendPacket(new ServerboundContainerClosePacket(packet.getContainerId()));
+            Platform.getInstance().sendPacketToServer(
+                    new ServerboundContainerClosePacket(packet.getContainerId()));
         }
         *//*?}*/
     }

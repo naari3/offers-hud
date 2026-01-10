@@ -4,6 +4,10 @@ pluginManagement {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
+        maven {
+            name = 'NeoForge'
+            url = 'https://maven.neoforged.net/releases'
+        }
         gradlePluginPortal()
     }
 }
@@ -14,7 +18,23 @@ plugins {
 
 stonecutter {
     create(rootProject) {
-        versions "1.21.11", "1.21.10", "1.21.9", "1.21.8", "1.21.5", "1.21.4", "1.21.1", "1.20.6", "1.20.4"
-        vcsVersion = "1.21.11"
+        vers "1.21.11-fabric", "1.21.11"
+        vers "1.21.11-neoforge", "1.21.11"
+        vers "1.21.10-fabric", "1.21.10"
+        vers "1.21.10-neoforge", "1.21.10"
+        vers "1.21.9-fabric", "1.21.9"
+        vers "1.21.9-neoforge", "1.21.9"
+        vers "1.21.8-fabric", "1.21.8"
+        vers "1.21.8-neoforge", "1.21.8"
+        vers "1.21.5-fabric", "1.21.5"
+        vers "1.21.5-neoforge", "1.21.5"
+        vers "1.21.4-fabric", "1.21.4"
+        vers "1.21.4-neoforge", "1.21.4"
+        vers "1.21.1-fabric", "1.21.1"
+        vers "1.21.1-neoforge", "1.21.1"
+        vers "1.20.6-fabric", "1.20.6"
+        vers "1.20.6-neoforge", "1.20.6"
+        vers "1.20.4-fabric", "1.20.4"
+        vcsVersion = "1.21.11-fabric"
     }
 }

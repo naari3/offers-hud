@@ -11,10 +11,9 @@ import org.apache.logging.log4j.Logger;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
+//? if fabric {
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 /*? if >= 1.21.11 {*/
@@ -30,23 +29,35 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.naari3.offershud.config.ModConfig;
+import net.naari3.offershud.platform.Platform;
 import net.naari3.offershud.renderer.OffersHUDRenderer;
 
+//? if fabric {
 public class OffersHUD implements ClientModInitializer {
+//?} else {
+/*public class OffersHUD {
+*//*?}*/
     public static final String MODID = "offershud";
     public static final Logger logger = LogManager.getLogger(MODID);
     public static boolean openWindow = false;
     private static ModConfig config;
 
+    //? if fabric {
     @Override
     public void onInitializeClient() {
+        init();
+    }
+    //?}
+
+    public static void init() {
         AutoConfig.register(ModConfig.class, Toml4jConfigSerializer::new);
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
-        logger.info("Hello Fabric world!");
+        logger.info("Hello from OffersHUD!");
         var mc = Minecraft.getInstance();
+        var platform = Platform.getInstance();
 
-        ClientTickEvents.END_WORLD_TICK.register(e -> {
+        platform.registerClientTickHandler(() -> {
             if (!config.enabled)
                 return;
             // If the player is in a screen, do nothing.
@@ -54,7 +65,7 @@ public class OffersHUD implements ClientModInitializer {
             // see: https://github.com/naari3/offers-hud/issues/35
             if (mc.screen != null)
                 return;
-            var entity = this.getUpdatableEntity(mc);
+            var entity = getUpdatableEntity(mc);
             if (entity != null) {
                 if (MerchantInfo.getInfo().getLastId().isPresent()
                         && MerchantInfo.getInfo().getLastId().get() == entity.getId()) {
@@ -65,8 +76,8 @@ public class OffersHUD implements ClientModInitializer {
                 MerchantInfo.getInfo().setLastId(entity.getId());
 
                 if (mc.player != null) {
-                    ClientPlayNetworking.getSender()
-                            .sendPacket(ServerboundInteractPacket.createInteractionPacket(entity,
+                    platform.sendPacketToServer(
+                            ServerboundInteractPacket.createInteractionPacket(entity,
                                     mc.player.isShiftKeyDown(),
                                     InteractionHand.MAIN_HAND));
                 }
@@ -75,10 +86,10 @@ public class OffersHUD implements ClientModInitializer {
             }
         });
 
-        HudRenderCallback.EVENT.register(new OffersHUDRenderer());
+        platform.registerHudRenderer(new OffersHUDRenderer());
     }
 
-    private Entity getUpdatableEntity(Minecraft mc) {
+    private static Entity getUpdatableEntity(Minecraft mc) {
         if (OffersHUD.getOpenWindow()) {
             return null;
         }
@@ -130,5 +141,9 @@ public class OffersHUD implements ClientModInitializer {
 
     public static void setOpenWindow(boolean newValue) {
         OffersHUD.openWindow = newValue;
+    }
+
+    public static ModConfig getConfig() {
+        return config;
     }
 }
