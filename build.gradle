@@ -21,12 +21,16 @@ repositories {
     mavenCentral()
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://maven.parchmentmc.org" }
 }
 
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${stonecutter.current.project}"
-    mappings "net.fabricmc:yarn:${property('yarn_mappings')}:v2"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${property('parchment_version')}@zip")
+    }
     modImplementation "net.fabricmc:fabric-loader:${property('loader_version')}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
