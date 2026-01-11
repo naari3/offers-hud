@@ -27,7 +27,7 @@ side = "CLIENT"
 [[dependencies.offershud]]
 modId = "minecraft"
 type = "required"
-versionRange = "[${mc_version}]"
+versionRange = "${mc_deps_version}"
 ordering = "NONE"
 side = "CLIENT"
 

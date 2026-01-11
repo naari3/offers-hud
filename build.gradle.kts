@@ -101,6 +101,7 @@ if (isFabric) {
     }
 } else {
     processResourcesVars["mc_version"] = mcVersion
+    processResourcesVars["mc_deps_version"] = (findProperty("mc_deps_version") ?: "[$mcVersion]").toString()
     processResourcesVars["neoforge_version_range"] = (findProperty("neoforge_version_range") ?: "[0,)").toString()
     processResourcesVars["loader_version_range"] = (findProperty("loader_version_range") ?: "[0,)").toString()
 
