@@ -38,9 +38,7 @@ base {
 version = project.mod_version + '+' + stonecutter.current.project
 group = project.maven_group
 
-def javaInt = isFabric
-    ? (stonecutter.eval(mcVersion, ">=1.20.5") ? 21 : 17)
-    : 21
+def javaInt = stonecutter.eval(mcVersion, ">=1.20.5") ? 21 : 17
 
 repositories {
     mavenCentral()
@@ -107,8 +105,17 @@ if (isFabric) {
                 "loader_version_range": findProperty('loader_version_range') ?: '[0,)',
                 "java_version": javaInt
         ]
-        filesMatching("META-INF/neoforge.mods.toml") {
-            expand(vars)
+        // NeoForge 20.4.x (MC 1.20.4) uses mods.toml, 20.5+ uses neoforge.mods.toml
+        if (stonecutter.eval(mcVersion, ">=1.20.5")) {
+            filesMatching("META-INF/neoforge.mods.toml") {
+                expand(vars)
+            }
+            exclude "META-INF/mods.toml"
+        } else {
+            filesMatching("META-INF/mods.toml") {
+                expand(vars)
+            }
+            exclude "META-INF/neoforge.mods.toml"
         }
         filesMatching("offershud.mixins.json") {
             expand(vars)
