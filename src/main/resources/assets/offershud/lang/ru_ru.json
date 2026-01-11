@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.offershud.title": "Предложения HUD",
+  "text.autoconfig.offershud.option.enabled": "Включено",
+  "text.autoconfig.offershud.option.ignoreNoProfession": "Игнорировать жителей деревни, у которых нет профессии",
+  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Подавлять казнь жителей деревни",
+  "text.autoconfig.offershud.option.offsetX": "HUD Предложения: X",
+  "text.autoconfig.offershud.option.offsetY": "HUD Предложения: Y",
+  "text.autoconfig.offershud.option.scale": "HUD Масштаб"
+}
