@@ -1,9 +1,21 @@
 plugins {
     id "dev.kikugie.stonecutter"
 }
-stonecutter.active "1.21.11" /* [SC] DO NOT EDIT */
+stonecutter.active "1.21.11-fabric" /* [SC] DO NOT EDIT */
 
-stonecutter.registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) { 
+stonecutter.registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
     setGroup "project"
     ofTask "build"
+}
+
+stonecutter.registerChiseled tasks.register("chiseledBuildFabric", stonecutter.chiseled) {
+    setGroup "project"
+    ofTask "build"
+    versions { branch, ver -> ver.project.contains("-fabric") }
+}
+
+stonecutter.registerChiseled tasks.register("chiseledBuildNeoForge", stonecutter.chiseled) {
+    setGroup "project"
+    ofTask "build"
+    versions { branch, ver -> ver.project.contains("-neoforge") }
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.village.TradeOffer;
+import net.minecraft.world.item.trading.MerchantOffer;
 
 public class MerchantInfo {
     private static MerchantInfo info = new MerchantInfo();
@@ -16,17 +16,17 @@ public class MerchantInfo {
     private Integer lastId;
 
     @NotNull
-    private List<TradeOffer> offers = new ArrayList<>();
+    private List<MerchantOffer> offers = new ArrayList<>();
 
     public static MerchantInfo getInfo() {
         return info;
     }
 
-    public List<TradeOffer> getOffers() {
+    public List<MerchantOffer> getOffers() {
         return this.offers;
     }
 
-    public void setOffers(List<TradeOffer> offerlist) {
+    public void setOffers(List<MerchantOffer> offerlist) {
         this.offers = offerlist;
     }
 

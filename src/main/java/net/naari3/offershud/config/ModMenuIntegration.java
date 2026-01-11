@@ -1,3 +1,4 @@
+//? if fabric {
 package net.naari3.offershud.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
@@ -14,3 +15,4 @@ public class ModMenuIntegration implements ModMenuApi {
         return parent -> AutoConfig.getConfigScreen(ModConfig.class, parent).get();
     }
 }
+//?}
