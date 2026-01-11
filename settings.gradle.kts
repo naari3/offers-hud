@@ -1,0 +1,49 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            name = "Fabric"
+            url = uri("https://maven.fabricmc.net/")
+        }
+        maven {
+            name = "Shedaniel"
+            url = uri("https://maven.shedaniel.me/")
+        }
+        maven {
+            name = "NeoForge"
+            url = uri("https://maven.neoforged.net/releases")
+        }
+    }
+}
+
+plugins {
+    id("dev.kikugie.stonecutter") version "0.5"
+}
+
+stonecutter {
+    kotlinController = true
+    centralScript = "build.gradle.kts"
+
+    create(rootProject) {
+        vers("1.21.11-fabric", "1.21.11")
+        vers("1.21.11-neoforge", "1.21.11")
+        vers("1.21.10-fabric", "1.21.10")
+        vers("1.21.10-neoforge", "1.21.10")
+        vers("1.21.9-fabric", "1.21.9")
+        vers("1.21.9-neoforge", "1.21.9")
+        vers("1.21.8-fabric", "1.21.8")
+        vers("1.21.8-neoforge", "1.21.8")
+        vers("1.21.5-fabric", "1.21.5")
+        vers("1.21.5-neoforge", "1.21.5")
+        vers("1.21.4-fabric", "1.21.4")
+        vers("1.21.4-neoforge", "1.21.4")
+        vers("1.21.1-fabric", "1.21.1")
+        vers("1.21.1-neoforge", "1.21.1")
+        vers("1.20.6-fabric", "1.20.6")
+        vers("1.20.6-neoforge", "1.20.6")
+        vers("1.20.4-fabric", "1.20.4")
+        vers("1.20.4-neoforge", "1.20.4")
+        vcsVersion = "1.21.11-fabric"
+    }
+}
