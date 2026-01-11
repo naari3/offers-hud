@@ -6,13 +6,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.shedaniel.autoconfig.AutoConfig;
-//? if fabric {
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-//?} else {
-/*import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-*//*?}*/
 /*? if >= 1.21.11 {*/
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 /*?} else {*/
@@ -21,11 +14,6 @@ import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.naari3.offershud.config.ModConfig;
 
 @Mixin(AbstractVillager.class)
-//? if fabric {
-@Environment(EnvType.CLIENT)
-//?} else {
-/*@OnlyIn(Dist.CLIENT)
-*//*?}*/
 public abstract class NoRolling {
     @Inject(at = @At("HEAD"), method = "getUnhappyCounter", cancellable = true)
     public void getUnhappyCounter(CallbackInfoReturnable<Integer> ci) {
