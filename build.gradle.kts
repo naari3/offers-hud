@@ -11,12 +11,9 @@ val current = stonecutter.current.project
 val isNeoForge = current.endsWith("-neoforge")
 val isFabric = !isNeoForge
 
-if (isNeoForge) {
-    stonecutter.const("neoforge", true)
-    stonecutter.const("fabric", false)
-} else {
-    stonecutter.const("fabric", true)
-    stonecutter.const("neoforge", false)
+stonecutter {
+    constants["neoforge"] = isNeoForge
+    constants["fabric"] = isFabric
 }
 
 // Extract MC version from project name
