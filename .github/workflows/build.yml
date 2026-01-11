@@ -31,7 +31,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build with Gradle
-        run: ./gradlew chiseledBuild
+        run: ./gradlew build
       - uses: actions/upload-artifact@v4
         with:
           name: Compiled artifacts for ${{ github.sha }}
