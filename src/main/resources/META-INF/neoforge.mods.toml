@@ -32,7 +32,7 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.offershud]]
-modId = "cloth_config"
+modId = "yet_another_config_lib_v3"
 type = "optional"
 versionRange = "*"
 ordering = "NONE"

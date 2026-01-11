@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import me.shedaniel.autoconfig.AutoConfig;
 //? if fabric {
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 //?}
@@ -74,7 +73,7 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
     @Override
     public void render(GuiGraphics context, float tickDelta) {
     *//*?}*/
-        var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        var config = ModConfig.HANDLER.instance();
 
         if (!config.enabled)
             return;

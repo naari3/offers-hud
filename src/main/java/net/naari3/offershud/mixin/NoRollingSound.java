@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import me.shedaniel.autoconfig.AutoConfig;
 //? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -27,7 +26,7 @@ import net.naari3.offershud.config.ModConfig;
 public abstract class NoRollingSound {
     @Inject(at = @At("HEAD"), method = "playSound", cancellable = true)
     public void playSound(SoundEvent sound, float volume, float pitch, CallbackInfo ci) {
-        var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        var config = ModConfig.HANDLER.instance();
         if (config.suppressVillagerHeadRolling && SoundEvents.VILLAGER_NO == sound) {
             ci.cancel();
         }

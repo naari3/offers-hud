@@ -1,9 +1,16 @@
 {
-  "text.autoconfig.offershud.title": "Offers HUD",
-  "text.autoconfig.offershud.option.enabled": "有効",
-  "text.autoconfig.offershud.option.ignoreNoProfession": "無職を無視する",
-  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "村人の首振りを抑制する",
-  "text.autoconfig.offershud.option.offsetX": "HUDのオフセット: X",
-  "text.autoconfig.offershud.option.offsetY": "HUDのオフセット: Y",
-  "text.autoconfig.offershud.option.scale": "HUDの倍率(大きさ)"
+  "offershud.config.title": "Offers HUD",
+  "offershud.config.general": "一般",
+  "offershud.config.enabled": "有効",
+  "offershud.config.enabled.description": "MODを有効または無効にする",
+  "offershud.config.ignoreNoProfession": "無職を無視する",
+  "offershud.config.ignoreNoProfession.description": "有効にすると、職業のない村人の取引を表示しません",
+  "offershud.config.suppressVillagerHeadRolling": "村人の首振りを抑制する",
+  "offershud.config.suppressVillagerHeadRolling.description": "有効にすると、村人が首を振るアニメーションと音を抑制します",
+  "offershud.config.offsetX": "HUDのオフセット: X",
+  "offershud.config.offsetX.description": "画面左端からのHUDの水平オフセット",
+  "offershud.config.offsetY": "HUDのオフセット: Y",
+  "offershud.config.offsetY.description": "画面上端からのHUDの垂直オフセット",
+  "offershud.config.scale": "HUDの倍率",
+  "offershud.config.scale.description": "HUD表示のスケール係数"
 }

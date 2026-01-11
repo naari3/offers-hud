@@ -1,9 +1,16 @@
 {
-  "text.autoconfig.offershud.title": "Offers HUD",
-  "text.autoconfig.offershud.option.enabled": "启用",
-  "text.autoconfig.offershud.option.ignoreNoProfession": "忽略无业村民",
-  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling",
-  "text.autoconfig.offershud.option.offsetX": "HUD X 方向偏移",
-  "text.autoconfig.offershud.option.offsetY": "HUD Y 方向偏移",
-  "text.autoconfig.offershud.option.scale": "HUD 缩放"
+  "offershud.config.title": "Offers HUD",
+  "offershud.config.general": "常规",
+  "offershud.config.enabled": "启用",
+  "offershud.config.enabled.description": "启用或禁用模组",
+  "offershud.config.ignoreNoProfession": "忽略无业村民",
+  "offershud.config.ignoreNoProfession.description": "启用后，不显示没有职业的村民的交易",
+  "offershud.config.suppressVillagerHeadRolling": "抑制村民摇头",
+  "offershud.config.suppressVillagerHeadRolling.description": "启用后，阻止村民摇头动画和声音",
+  "offershud.config.offsetX": "HUD X 方向偏移",
+  "offershud.config.offsetX.description": "HUD 距屏幕左边缘的水平偏移",
+  "offershud.config.offsetY": "HUD Y 方向偏移",
+  "offershud.config.offsetY.description": "HUD 距屏幕上边缘的垂直偏移",
+  "offershud.config.scale": "HUD 缩放",
+  "offershud.config.scale.description": "HUD 显示的缩放比例"
 }

@@ -9,8 +9,6 @@ import net.minecraft.world.item.trading.Merchant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 //? if fabric {
 import net.fabricmc.api.ClientModInitializer;
 //?}
@@ -50,8 +48,8 @@ public class OffersHUD implements ClientModInitializer {
     //?}
 
     public static void init() {
-        AutoConfig.register(ModConfig.class, Toml4jConfigSerializer::new);
-        config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        ModConfig.HANDLER.load();
+        config = ModConfig.HANDLER.instance();
 
         logger.info("Hello from OffersHUD!");
         var mc = Minecraft.getInstance();

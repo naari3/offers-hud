@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import me.shedaniel.autoconfig.AutoConfig;
 //? if fabric {
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,7 +28,7 @@ import net.naari3.offershud.config.ModConfig;
 public abstract class NoRolling {
     @Inject(at = @At("HEAD"), method = "getUnhappyCounter", cancellable = true)
     public void getUnhappyCounter(CallbackInfoReturnable<Integer> ci) {
-        var config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        var config = ModConfig.HANDLER.instance();
         if (config.suppressVillagerHeadRolling) {
             ci.setReturnValue(0);
         }

@@ -1,9 +1,16 @@
 {
-  "text.autoconfig.offershud.title": "Offers HUD",
-  "text.autoconfig.offershud.option.enabled": "Enabled",
-  "text.autoconfig.offershud.option.ignoreNoProfession": "Ignore villagers who do not have a profession",
-  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling",
-  "text.autoconfig.offershud.option.offsetX": "HUD Offset: X",
-  "text.autoconfig.offershud.option.offsetY": "HUD Offset: Y",
-  "text.autoconfig.offershud.option.scale": "HUD Scale"
+  "offershud.config.title": "Offers HUD",
+  "offershud.config.general": "General",
+  "offershud.config.enabled": "Enabled",
+  "offershud.config.enabled.description": "Enable or disable the mod",
+  "offershud.config.ignoreNoProfession": "Ignore villagers who do not have a profession",
+  "offershud.config.ignoreNoProfession.description": "When enabled, villagers without a profession will not display offers",
+  "offershud.config.suppressVillagerHeadRolling": "Suppress villager head rolling",
+  "offershud.config.suppressVillagerHeadRolling.description": "When enabled, prevents the villager head rolling animation and sound when they shake their head",
+  "offershud.config.offsetX": "HUD Offset: X",
+  "offershud.config.offsetX.description": "Horizontal offset of the HUD from the left edge of the screen",
+  "offershud.config.offsetY": "HUD Offset: Y",
+  "offershud.config.offsetY.description": "Vertical offset of the HUD from the top edge of the screen",
+  "offershud.config.scale": "HUD Scale",
+  "offershud.config.scale.description": "Scale factor for the HUD display"
 }
