@@ -112,7 +112,7 @@ jobs:
 
           # Read minecraft_deps from version-specific gradle.properties
           props_file="versions/${full_version}/gradle.properties"
-          minecraft_deps=$(grep "^minecraft_deps=" "$props_file" | cut -d'=' -f2)
+          minecraft_deps=$(grep "^minecraft_deps=" "$props_file" | cut -d'=' -f2-)
           echo "game-versions=$minecraft_deps" >> $GITHUB_OUTPUT
           echo "Game versions: $minecraft_deps"
       - name: Publish to Curseforge and Modrinth
