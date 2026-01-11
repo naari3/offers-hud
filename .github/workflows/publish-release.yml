@@ -109,8 +109,14 @@ jobs:
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "loader=$loader" >> $GITHUB_OUTPUT
           echo "Detected: MC $version, Loader: $loader"
+
+          # Read minecraft_deps from version-specific gradle.properties
+          props_file="versions/${full_version}/gradle.properties"
+          minecraft_deps=$(grep "^minecraft_deps=" "$props_file" | cut -d'=' -f2)
+          echo "game-versions=$minecraft_deps" >> $GITHUB_OUTPUT
+          echo "Game versions: $minecraft_deps"
       - name: Publish to Curseforge and Modrinth
-        uses: Kir-Antipov/mc-publish@v3
+        uses: Kira-NT/mc-publish@v3
         with:
           name: OffersHUD v${{ needs.get-properties.outputs.mod-version }} for Minecraft ${{ steps.getmcversion.outputs.version }} (${{ steps.getmcversion.outputs.loader }})
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -118,6 +124,8 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           changelog: ${{ github.event.release.body }}
           version-type: ${{ needs.get-properties.outputs.release-type }}
+          game-versions: |
+            ${{ steps.getmcversion.outputs.game-versions }}
           loaders: |
             ${{ steps.getmcversion.outputs.loader }}
           java: |
