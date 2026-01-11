@@ -97,22 +97,29 @@ jobs:
         with:
           name: Compiled artifacts for ${{ github.sha }}
           path: versions
-      - name: Get Minecraft Version from filename
+      - name: Get Minecraft Version and Loader from filename
         id: getmcversion
         run: |
-          version=$(echo ${{ matrix.file }} | sed -n 's/.*\/offers-hud-.*+\(.*\)\.jar/\1/p')
+          # Extract "1.21.11-fabric" or "1.21.11-neoforge" from filename
+          full_version=$(echo ${{ matrix.file }} | sed -n 's/.*\/offers-hud-.*+\(.*\)\.jar/\1/p')
+          # Extract loader name (fabric or neoforge)
+          loader=$(echo $full_version | sed -n 's/.*-\(fabric\|neoforge\)$/\1/p')
+          # Extract Minecraft version (remove loader suffix)
+          version=$(echo $full_version | sed 's/-\(fabric\|neoforge\)$//')
           echo "version=$version" >> $GITHUB_OUTPUT
+          echo "loader=$loader" >> $GITHUB_OUTPUT
+          echo "Detected: MC $version, Loader: $loader"
       - name: Publish to Curseforge and Modrinth
         uses: Kir-Antipov/mc-publish@v3
         with:
-          name: OffersHUD v${{ needs.get-properties.outputs.mod-version }} for Minecraft ${{ steps.getmcversion.outputs.version }}
+          name: OffersHUD v${{ needs.get-properties.outputs.mod-version }} for Minecraft ${{ steps.getmcversion.outputs.version }} (${{ steps.getmcversion.outputs.loader }})
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           changelog: ${{ github.event.release.body }}
           version-type: ${{ needs.get-properties.outputs.release-type }}
           loaders: |
-            fabric
+            ${{ steps.getmcversion.outputs.loader }}
           java: |
             21
           files: ${{ matrix.file }}

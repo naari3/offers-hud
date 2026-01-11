@@ -2,6 +2,8 @@
 
 OffersHUD is a client-side mod which display a list of villager's trading offers as a HUD, without a right-click.
 
+Supports both **Fabric** and **NeoForge**.
+
 ![show offers](./docs/2022-01-10_08.00.13.png)
 
 ## Installation
@@ -14,14 +16,17 @@ The latest releases of OffersHUD are published to these services.
 - [GitHub Release](https://github.com/naari3/offers-hud/releases)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/offershud)
 
-### Required other mods
+### Required Mods
 
-Install the latest version for suitable Minecraft versions.
+#### Fabric
 
-- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
-- [Cloth Config API](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
-- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
-  - This is optional but recommended for configuration features.
+- [Fabric API](https://modrinth.com/mod/fabric-api)
+- [Cloth Config API](https://modrinth.com/mod/cloth-config)
+- [Mod Menu](https://modrinth.com/mod/modmenu)
+
+#### NeoForge
+
+- [Cloth Config API](https://modrinth.com/mod/cloth-config)
 
 ## Features
 
@@ -32,9 +37,9 @@ When you focus on a villager with profession (or wandering trader), the offers w
 This can be very useful, for example, for carefully selecting the details of a villager's trading offers.
 You don't have to right-click on the villager every time you reposition the job site block.
 
-### Configurations (required modmenu)
+### Configurations
 
-You will need to add **modmenu** for the configurations.
+Access the configuration screen from the Mods menu.
 
 #### Enabled
 
