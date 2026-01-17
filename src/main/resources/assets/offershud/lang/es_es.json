@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.offershud.title": "Ofertas HUD",
+  "text.autoconfig.offershud.option.enabled": "Habilitado",
+  "text.autoconfig.offershud.option.ignoreNoProfession": "Ignorar aldeanos que no tienen profesión",
+  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suprimir el movimiento de cabeza del aldeano",
+  "text.autoconfig.offershud.option.offsetX": "Desplazamiento del HUD: X",
+  "text.autoconfig.offershud.option.offsetY": "Desplazamiento del HUD: Y",
+  "text.autoconfig.offershud.option.scale": "Escala del HUD"
+}
