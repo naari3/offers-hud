@@ -84,11 +84,11 @@ val processResourcesVars: MutableMap<String, Any> = mutableMapOf(
 )
 
 if (isFabric) {
-    exclude("META-INF/mods.toml", "META-INF/neoforge.mods.toml")
     val mcDepVersion = property("minecraft_deps") as String
     processResourcesVars["mc_dep_version"] = mcDepVersion
 
     tasks.named<ProcessResources>("processResources") {
+        exclude("META-INF/mods.toml", "META-INF/neoforge.mods.toml")
         inputs.property("version", version)
         inputs.property("mc_dep_version", mcDepVersion)
         inputs.property("java_version", javaInt)
