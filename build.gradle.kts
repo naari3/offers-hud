@@ -88,6 +88,7 @@ if (isFabric) {
     processResourcesVars["mc_dep_version"] = mcDepVersion
 
     tasks.named<ProcessResources>("processResources") {
+        exclude("META-INF/mods.toml", "META-INF/neoforge.mods.toml")
         inputs.property("version", version)
         inputs.property("mc_dep_version", mcDepVersion)
         inputs.property("java_version", javaInt)
@@ -106,6 +107,7 @@ if (isFabric) {
     processResourcesVars["loader_version_range"] = (findProperty("loader_version_range") ?: "[0,)").toString()
 
     tasks.named<ProcessResources>("processResources") {
+        exclude("fabric.mod.json")
         // NeoForge 20.4.x (MC 1.20.4) uses mods.toml, 20.5+ uses neoforge.mods.toml
         if (stonecutter.eval(mcVersion, ">=1.20.5")) {
             filesMatching("META-INF/neoforge.mods.toml") {
