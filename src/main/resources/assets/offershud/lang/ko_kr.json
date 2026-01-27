@@ -5,5 +5,10 @@
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "주민의 고개 흔들기 억제",
   "text.autoconfig.offershud.option.offsetX": "HUD 오프셋: X",
   "text.autoconfig.offershud.option.offsetY": "HUD 오프셋: Y",
-  "text.autoconfig.offershud.option.scale": "HUD 규모"
+  "text.autoconfig.offershud.option.scale": "HUD 크기",
+  "text.autoconfig.offershud.option.alignment": "HUD정렬",
+  "text.autoconfig.offershud.option.alignment.TOP_LEFT": "왼쪽 위",
+  "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "오른쪽 위",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "왼쪽 아래",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "오른쪽 아래"
 }

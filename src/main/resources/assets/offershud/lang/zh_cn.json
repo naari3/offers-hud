@@ -2,8 +2,13 @@
   "text.autoconfig.offershud.title": "Offers HUD",
   "text.autoconfig.offershud.option.enabled": "启用",
   "text.autoconfig.offershud.option.ignoreNoProfession": "忽略无业村民",
-  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling",
+  "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "抑制村民摇头",
   "text.autoconfig.offershud.option.offsetX": "HUD X 方向偏移",
   "text.autoconfig.offershud.option.offsetY": "HUD Y 方向偏移",
-  "text.autoconfig.offershud.option.scale": "HUD 缩放"
+  "text.autoconfig.offershud.option.scale": "HUD 缩放",
+  "text.autoconfig.offershud.option.alignment": "HUD 对齐",
+  "text.autoconfig.offershud.option.alignment.TOP_LEFT": "左上",
+  "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "右上",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "左下",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "右下"
 }

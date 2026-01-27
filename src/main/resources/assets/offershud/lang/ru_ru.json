@@ -5,5 +5,10 @@
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Подавлять покачивание головой жителей",
   "text.autoconfig.offershud.option.offsetX": "HUD Предложения: X",
   "text.autoconfig.offershud.option.offsetY": "HUD Предложения: Y",
-  "text.autoconfig.offershud.option.scale": "HUD Масштаб"
+  "text.autoconfig.offershud.option.scale": "HUD Масштаб",
+  "text.autoconfig.offershud.option.alignment": "Расположение HUD",
+  "text.autoconfig.offershud.option.alignment.TOP_LEFT": "Левый верхний",
+  "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "Правый верхний",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "Левый нижний",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "Правый нижний"
 }
