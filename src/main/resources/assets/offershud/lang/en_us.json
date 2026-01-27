@@ -5,5 +5,10 @@
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling",
   "text.autoconfig.offershud.option.offsetX": "HUD Offset: X",
   "text.autoconfig.offershud.option.offsetY": "HUD Offset: Y",
-  "text.autoconfig.offershud.option.scale": "HUD Scale"
+  "text.autoconfig.offershud.option.scale": "HUD Scale",
+  "text.autoconfig.offershud.option.alignment": "HUD Alignment",
+  "text.autoconfig.offershud.option.alignment.TOP_LEFT": "Top Left",
+  "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "Top Right",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "Bottom Left",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "Bottom Right"
 }

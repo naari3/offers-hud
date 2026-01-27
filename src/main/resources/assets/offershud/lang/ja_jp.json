@@ -5,5 +5,10 @@
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "村人の首振りを抑制する",
   "text.autoconfig.offershud.option.offsetX": "HUDのオフセット: X",
   "text.autoconfig.offershud.option.offsetY": "HUDのオフセット: Y",
-  "text.autoconfig.offershud.option.scale": "HUDの倍率(大きさ)"
+  "text.autoconfig.offershud.option.scale": "HUDの倍率(大きさ)",
+  "text.autoconfig.offershud.option.alignment": "HUDの基準位置",
+  "text.autoconfig.offershud.option.alignment.TOP_LEFT": "左上",
+  "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "右上",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "左下",
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "右下"
 }
