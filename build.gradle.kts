@@ -37,7 +37,7 @@ extensions.configure<BasePluginExtension> {
 version = "${property("mod_version")}+${stonecutter.current.project}"
 group = property("maven_group") as String
 
-val javaInt = if (stonecutter.eval(mcVersion, ">=1.20.5")) 21 else 17
+val javaInt = 21
 
 repositories {
     mavenCentral()
@@ -108,17 +108,9 @@ if (isFabric) {
 
     tasks.named<ProcessResources>("processResources") {
         exclude("fabric.mod.json")
-        // NeoForge 20.4.x (MC 1.20.4) uses mods.toml, 20.5+ uses neoforge.mods.toml
-        if (stonecutter.eval(mcVersion, ">=1.20.5")) {
-            filesMatching("META-INF/neoforge.mods.toml") {
-                expand(processResourcesVars)
-            }
-            exclude("META-INF/mods.toml")
-        } else {
-            filesMatching("META-INF/mods.toml") {
-                expand(processResourcesVars)
-            }
-            exclude("META-INF/neoforge.mods.toml")
+        exclude("META-INF/mods.toml")
+        filesMatching("META-INF/neoforge.mods.toml") {
+            expand(processResourcesVars)
         }
         filesMatching("offershud.mixins.json") {
             expand(processResourcesVars)
@@ -132,7 +124,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 extensions.configure<JavaPluginExtension> {
     withSourcesJar()
-    val javaObj = if (javaInt == 21) JavaVersion.VERSION_21 else JavaVersion.VERSION_17
+    val javaObj = JavaVersion.VERSION_21
     sourceCompatibility = javaObj
     targetCompatibility = javaObj
 }
