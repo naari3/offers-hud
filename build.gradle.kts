@@ -4,7 +4,6 @@ plugins {
     id("dev.kikugie.stonecutter")
     id("dev.architectury.loom") version "1.14.473" apply false
     id("dev.architectury.loom-no-remap") version "1.14.473" apply false
-    id("architectury-plugin") version "3.5.163" apply false
     id("maven-publish")
 }
 
@@ -21,45 +20,11 @@ stonecutter {
 val mcVersion = current.replace("-fabric", "").replace("-neoforge", "")
 val isUnobfuscated = stonecutter.current.version >= "26.1"
 
-// Apply Architectury plugins - use no-remap for unobfuscated versions (26.1+)
+// Apply Architectury Loom - use no-remap for unobfuscated versions (26.1+)
 if (isUnobfuscated) {
     apply(plugin = "dev.architectury.loom-no-remap")
 } else {
     apply(plugin = "dev.architectury.loom")
-}
-apply(plugin = "architectury-plugin")
-
-extensions.configure<dev.architectury.plugin.ArchitectPluginExtension> {
-    if (isFabric) {
-        fabric()
-    } else {
-        neoForge()
-    }
-}
-
-// Workaround: prepareArchitecturyTransformer scans all Loom projects including
-// unobfuscated ones (26.1+) and fails when trying to get their mappings.
-// For unobfuscated versions, replace the task with one that writes a minimal
-// properties file (no remapping needed). For obfuscated versions, also disable
-// the original task since it scans cross-project and hits unobfuscated ones.
-tasks.matching { it.name == "prepareArchitecturyTransformer" }.configureEach {
-    enabled = false
-}
-
-tasks.register("createArchitecturyProperties") {
-    val propsDir = project.projectDir.resolve(".gradle/architectury")
-    val propsFile = propsDir.resolve(".properties")
-    val transformsFile = propsDir.resolve(".transforms")
-    outputs.files(propsFile, transformsFile)
-    doLast {
-        propsDir.mkdirs()
-        propsFile.writeText("")
-        transformsFile.writeText("")
-    }
-}
-
-tasks.matching { it.name == "runClient" || it.name == "runServer" }.configureEach {
-    dependsOn("createArchitecturyProperties")
 }
 
 extensions.configure<BasePluginExtension> {
