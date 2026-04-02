@@ -6,12 +6,16 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import me.shedaniel.autoconfig.AutoConfig;
-//? if fabric {
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-//?}
+//? if fabric && < 26.1 {
+/*import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+*///?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+/*? if >= 26.1 {*/
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+/*?} else {*/
+/*import net.minecraft.client.gui.GuiGraphics;
+*//*?}*/
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 /*? if >= 1.21.3 && < 1.21.6 {*/
 /*import net.minecraft.client.renderer.RenderType;
@@ -37,9 +41,11 @@ import net.naari3.offershud.platform.Platform;
 import net.minecraft.client.renderer.RenderPipelines;
 /*?}*/
 
-//? if fabric {
-public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRenderer {
-//?} else {
+/*? if >= 26.1 {*/
+public class OffersHUDRenderer implements Platform.HudRenderer {
+/*?} else if fabric {*/
+/*public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRenderer {
+*//*?} else {*/
 /*public class OffersHUDRenderer implements Platform.HudRenderer {
 *//*?}*/
     /*? if >= 1.21.11 {*/
@@ -54,8 +60,11 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
     *//*?}*/
 
 
-    /*? if >=1.21 {*/
-    //? if fabric {
+    /*? if >= 26.1 {*/
+    @Override
+    public void extractRenderState(GuiGraphicsExtractor context, DeltaTracker tickCounter) {
+    /*?} else if >=1.21 {*/
+    /*//? if fabric {
     @Override
     public void onHudRender(GuiGraphics context, DeltaTracker tickCounter) {
         render(context, tickCounter);
@@ -64,7 +73,7 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
 
     @Override
     public void render(GuiGraphics context, DeltaTracker tickCounter) {
-    /*?} else {*/
+    *//*?} else {*/
     /*//? if fabric {
     @Override
     public void onHudRender(GuiGraphics context, float tickDelta) {
@@ -93,13 +102,22 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
         RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);
         *//*?}*/
 
+        /*? if >= 26.1 {*/
         var modelMatrices = context.pose();
+        /*?} else {*/
+        /*var modelMatrices = context.pose();
+        *//*?}*/
 
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
             var offers = MerchantInfo.getInfo().getOffers();
 
-            int screenWidth = client.getWindow().getGuiScaledWidth();
+            /*? if >= 26.1 {*/
+            int screenWidth = context.guiWidth();
+            int screenHeight = context.guiHeight();
+            /*?} else {*/
+            /*int screenWidth = client.getWindow().getGuiScaledWidth();
             int screenHeight = client.getWindow().getGuiScaledHeight();
+            *//*?}*/
             float scale = config.scale;
 
             float translateX = config.alignment.isRight() ?
@@ -140,7 +158,17 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
                 var secondBuy = offer.getCostB().copy();
                 var sell = offer.getResult().copy();
 
-                context.renderItem(firstBuy, baseX, baseY);
+                /*? if >= 26.1 {*/
+                context.item(firstBuy, baseX, baseY);
+                context.itemDecorations(textRenderer, firstBuy, baseX, baseY);
+
+                context.item(secondBuy, baseX + 20, baseY);
+                context.itemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
+
+                context.item(sell, baseX + 53, baseY);
+                context.itemDecorations(textRenderer, sell, baseX + 53, baseY);
+                /*?} else {*/
+                /*context.renderItem(firstBuy, baseX, baseY);
                 context.renderItemDecorations(textRenderer, firstBuy, baseX, baseY);
 
                 context.renderItem(secondBuy, baseX + 20, baseY);
@@ -148,12 +176,17 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
 
                 context.renderItem(sell, baseX + 53, baseY);
                 context.renderItemDecorations(textRenderer, sell, baseX + 53, baseY);
+                *//*?}*/
 
                 this.renderArrow(context, offer, baseX + -20, baseY);
 
                 var enchantments = getEnchantmentText(offer);
 
-                context.drawString(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
+                /*? if >= 26.1 {*/
+                context.text(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
+                /*?} else {*/
+                /*context.drawString(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
+                *//*?}*/
                 i += 1;
             }
 
@@ -166,7 +199,11 @@ public class OffersHUDRenderer implements HudRenderCallback, Platform.HudRendere
     }
 
     // from MerchantScreen
-    private void renderArrow(GuiGraphics context, MerchantOffer tradeOffer, int x, int y) {
+    /*? if >= 26.1 {*/
+    private void renderArrow(GuiGraphicsExtractor context, MerchantOffer tradeOffer, int x, int y) {
+    /*?} else {*/
+    /*private void renderArrow(GuiGraphics context, MerchantOffer tradeOffer, int x, int y) {
+    *//*?}*/
         if (tradeOffer.isOutOfStock()) {
             //? if >=1.21.6 {
             context.blit(

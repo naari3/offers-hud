@@ -1,6 +1,10 @@
 package net.naari3.offershud.platform;
 
-import net.minecraft.client.gui.GuiGraphics;
+/*? if >= 26.1 {*/
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+/*?} else {*/
+/*import net.minecraft.client.gui.GuiGraphics;
+*//*?}*/
 import net.minecraft.network.protocol.Packet;
 
 public interface Platform {
@@ -10,9 +14,11 @@ public interface Platform {
 
     @FunctionalInterface
     interface HudRenderer {
-        /*? if >= 1.21 {*/
-        void render(GuiGraphics graphics, net.minecraft.client.DeltaTracker deltaTracker);
-        /*?} else {*/
+        /*? if >= 26.1 {*/
+        void extractRenderState(GuiGraphicsExtractor graphics, net.minecraft.client.DeltaTracker deltaTracker);
+        /*?} else if >= 1.21 {*/
+        /*void render(GuiGraphics graphics, net.minecraft.client.DeltaTracker deltaTracker);
+        *//*?} else {*/
         /*void render(GuiGraphics graphics, float tickDelta);
         *//*?}*/
     }

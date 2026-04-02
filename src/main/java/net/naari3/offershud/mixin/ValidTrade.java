@@ -13,13 +13,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionHand;
+/*? if >= 26.1 {*/
+import net.minecraft.world.phys.EntityHitResult;
+/*?}*/
 
 @Mixin(MultiPlayerGameMode.class)
 abstract class ValidTrade {
 
     // MultiPlayerGameMode
     @Inject(at = @At("HEAD"), method = "interact")
-    public void interact(Player player, Entity entity, InteractionHand hand, CallbackInfoReturnable<InteractionResult> ci) {
+    /*? if >= 26.1 {*/
+    public void interact(Player player, Entity entity, EntityHitResult hitResult, InteractionHand hand, CallbackInfoReturnable<InteractionResult> ci) {
+    /*?} else {*/
+    /*public void interact(Player player, Entity entity, InteractionHand hand, CallbackInfoReturnable<InteractionResult> ci) {
+    *//*?}*/
         if (!(entity instanceof Merchant)) {
             return;
         }
