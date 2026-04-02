@@ -46,11 +46,11 @@ jobs:
           echo "curse-versions=${{ needs.get-properties.outputs.curse-versions }}" >> $GITHUB_OUTPUT
       - name: Checkout the sources
         uses: actions/checkout@v4
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: 21
+          java-version: 25
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
@@ -110,11 +110,15 @@ jobs:
           echo "loader=$loader" >> $GITHUB_OUTPUT
           echo "Detected: MC $version, Loader: $loader"
 
-          # Read minecraft_deps from version-specific gradle.properties
+          # Read minecraft_deps and java_version from version-specific gradle.properties
           props_file="versions/${full_version}/gradle.properties"
           minecraft_deps=$(grep "^minecraft_deps=" "$props_file" | cut -d'=' -f2-)
           echo "game-versions=$minecraft_deps" >> $GITHUB_OUTPUT
           echo "Game versions: $minecraft_deps"
+
+          java_version=$(grep "^java_version=" "$props_file" | cut -d'=' -f2- || echo "21")
+          echo "java-version=${java_version:-21}" >> $GITHUB_OUTPUT
+          echo "Java version: ${java_version:-21}"
       - name: Publish to Curseforge and Modrinth
         uses: Kira-NT/mc-publish@v3
         with:
@@ -129,5 +133,5 @@ jobs:
           loaders: |
             ${{ steps.getmcversion.outputs.loader }}
           java: |
-            21
+            ${{ steps.getmcversion.outputs.java-version }}
           files: ${{ matrix.file }}

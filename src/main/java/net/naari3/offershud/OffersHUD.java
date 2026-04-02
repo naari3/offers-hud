@@ -78,10 +78,18 @@ public class OffersHUD implements ClientModInitializer {
                 MerchantInfo.getInfo().setLastId(entity.getId());
 
                 if (mc.player != null) {
+                    /*? if >= 26.1 {*/
                     platform.sendPacketToServer(
+                            new ServerboundInteractPacket(entity.getId(),
+                                    InteractionHand.MAIN_HAND,
+                                    net.minecraft.world.phys.Vec3.ZERO,
+                                    mc.player.isShiftKeyDown()));
+                    /*?} else {*/
+                    /*platform.sendPacketToServer(
                             ServerboundInteractPacket.createInteractionPacket(entity,
                                     mc.player.isShiftKeyDown(),
                                     InteractionHand.MAIN_HAND));
+                    *//*?}*/
                 }
             } else {
                 MerchantInfo.getInfo().setLastId(null);

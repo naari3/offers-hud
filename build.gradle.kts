@@ -2,8 +2,9 @@ import org.gradle.jvm.tasks.Jar
 
 plugins {
     id("dev.kikugie.stonecutter")
-    id("dev.architectury.loom") version "1.13-SNAPSHOT" apply false
-    id("architectury-plugin") version "3.4-SNAPSHOT" apply false
+    id("dev.architectury.loom") version "1.14.473" apply false
+    id("dev.architectury.loom-no-remap") version "1.14.473" apply false
+    id("architectury-plugin") version "3.5.163" apply false
     id("maven-publish")
 }
 
@@ -18,9 +19,14 @@ stonecutter {
 
 // Extract MC version from project name
 val mcVersion = current.replace("-fabric", "").replace("-neoforge", "")
+val isUnobfuscated = stonecutter.current.version >= "26.1"
 
-// Apply Architectury plugins
-apply(plugin = "dev.architectury.loom")
+// Apply Architectury plugins - use no-remap for unobfuscated versions (26.1+)
+if (isUnobfuscated) {
+    apply(plugin = "dev.architectury.loom-no-remap")
+} else {
+    apply(plugin = "dev.architectury.loom")
+}
 apply(plugin = "architectury-plugin")
 
 extensions.configure<dev.architectury.plugin.ArchitectPluginExtension> {
@@ -31,13 +37,38 @@ extensions.configure<dev.architectury.plugin.ArchitectPluginExtension> {
     }
 }
 
+// Workaround: prepareArchitecturyTransformer scans all Loom projects including
+// unobfuscated ones (26.1+) and fails when trying to get their mappings.
+// For unobfuscated versions, replace the task with one that writes a minimal
+// properties file (no remapping needed). For obfuscated versions, also disable
+// the original task since it scans cross-project and hits unobfuscated ones.
+tasks.matching { it.name == "prepareArchitecturyTransformer" }.configureEach {
+    enabled = false
+}
+
+tasks.register("createArchitecturyProperties") {
+    val propsDir = project.projectDir.resolve(".gradle/architectury")
+    val propsFile = propsDir.resolve(".properties")
+    val transformsFile = propsDir.resolve(".transforms")
+    outputs.files(propsFile, transformsFile)
+    doLast {
+        propsDir.mkdirs()
+        propsFile.writeText("")
+        transformsFile.writeText("")
+    }
+}
+
+tasks.matching { it.name == "runClient" || it.name == "runServer" }.configureEach {
+    dependsOn("createArchitecturyProperties")
+}
+
 extensions.configure<BasePluginExtension> {
     archivesName.set(property("archives_base_name") as String)
 }
 version = "${property("mod_version")}+${stonecutter.current.project}"
 group = property("maven_group") as String
 
-val javaInt = 21
+val javaInt = (findProperty("java_version") as String?)?.toIntOrNull() ?: 21
 
 repositories {
     mavenCentral()
@@ -58,23 +89,31 @@ loom.apply {
 
 dependencies {
     "minecraft"("com.mojang:minecraft:$mcVersion")
-    "mappings"(loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${property("parchment_version")}@zip")
-    })
+    if (!isUnobfuscated) {
+        "mappings"(loom.layered {
+            officialMojangMappings()
+            val parchmentVersion = findProperty("parchment_version") as String?
+            if (!parchmentVersion.isNullOrBlank()) {
+                parchment("org.parchmentmc.data:parchment-${parchmentVersion}@zip")
+            }
+        })
+    }
+
+    val modImpl = if (isUnobfuscated) "implementation" else "modImplementation"
+    val modApi = if (isUnobfuscated) "api" else "modApi"
 
     if (isFabric) {
-        "modImplementation"("net.fabricmc:fabric-loader:${property("loader_version")}")
-        "modImplementation"("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
-        "modImplementation"("com.terraformersmc:modmenu:${property("modmenu_version")}") {
+        modImpl("net.fabricmc:fabric-loader:${property("loader_version")}")
+        modImpl("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
+        modImpl("com.terraformersmc:modmenu:${property("modmenu_version")}") {
             exclude(module = "fabric-api")
         }
-        "modApi"("me.shedaniel.cloth:cloth-config-fabric:${property("cloth_config_version")}") {
+        modApi("me.shedaniel.cloth:cloth-config-fabric:${property("cloth_config_version")}") {
             exclude(module = "fabric-api")
         }
     } else {
         "neoForge"("net.neoforged:neoforge:${property("neoforge_version")}")
-        "modImplementation"("me.shedaniel.cloth:cloth-config-neoforge:${property("cloth_config_version")}")
+        modImpl("me.shedaniel.cloth:cloth-config-neoforge:${property("cloth_config_version")}")
     }
 }
 
@@ -124,7 +163,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 extensions.configure<JavaPluginExtension> {
     withSourcesJar()
-    val javaObj = JavaVersion.VERSION_21
+    val javaObj = JavaVersion.toVersion(javaInt)
     sourceCompatibility = javaObj
     targetCompatibility = javaObj
 }

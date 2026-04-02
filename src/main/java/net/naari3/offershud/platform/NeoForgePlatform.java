@@ -35,7 +35,11 @@ public class NeoForgePlatform implements Platform {
     public void registerHudRenderer(HudRenderer renderer) {
         NeoForge.EVENT_BUS.addListener(RenderGuiLayerEvent.Post.class, event -> {
             if (event.getName().equals(VanillaGuiLayers.HOTBAR)) {
-                renderer.render(event.getGuiGraphics(), event.getPartialTick());
+                //? if >= 26.1 {
+                renderer.extractRenderState(event.getGuiGraphics(), event.getPartialTick());
+                //?} else {
+                /^renderer.render(event.getGuiGraphics(), event.getPartialTick());
+                ^///?}
             }
         });
     }
