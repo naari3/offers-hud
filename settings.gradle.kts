@@ -26,6 +26,8 @@ stonecutter {
     centralScript = "build.gradle.kts"
 
     create(rootProject) {
+        version("26.1.2-fabric", "26.1.2")
+        version("26.1.2-neoforge", "26.1.2")
         version("26.1-fabric", "26.1")
         version("26.1-neoforge", "26.1")
         version("1.21.11-fabric", "1.21.11")
@@ -44,6 +46,6 @@ stonecutter {
         version("1.21.1-neoforge", "1.21.1")
         version("1.20.6-fabric", "1.20.6")
         version("1.20.6-neoforge", "1.20.6")
-        vcsVersion = "26.1-fabric"
+        vcsVersion = "26.1.2-fabric"
     }
 }
