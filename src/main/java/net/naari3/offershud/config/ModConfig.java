@@ -10,6 +10,7 @@ public class ModConfig implements ConfigData {
     public boolean enabled = true;
     public boolean ignoreNoProfession = true;
     public boolean suppressVillagerHeadRolling = false;
+    public boolean highlightExtremePrices = true;
 
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public Alignment alignment = Alignment.TOP_LEFT;

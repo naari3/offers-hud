@@ -3,6 +3,7 @@
   "text.autoconfig.offershud.option.enabled": "启用",
   "text.autoconfig.offershud.option.ignoreNoProfession": "忽略无业村民",
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "抑制村民摇头",
+  "text.autoconfig.offershud.option.highlightExtremePrices": "高亮显示最低价 / 最高价",
   "text.autoconfig.offershud.option.offsetX": "HUD X 方向偏移",
   "text.autoconfig.offershud.option.offsetY": "HUD Y 方向偏移",
   "text.autoconfig.offershud.option.scale": "HUD 缩放",

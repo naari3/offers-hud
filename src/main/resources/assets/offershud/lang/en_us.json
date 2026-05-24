@@ -3,6 +3,7 @@
   "text.autoconfig.offershud.option.enabled": "Enabled",
   "text.autoconfig.offershud.option.ignoreNoProfession": "Ignore villagers who do not have a profession",
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "Suppress villager head rolling",
+  "text.autoconfig.offershud.option.highlightExtremePrices": "Highlight lowest / highest prices",
   "text.autoconfig.offershud.option.offsetX": "HUD Offset: X",
   "text.autoconfig.offershud.option.offsetY": "HUD Offset: Y",
   "text.autoconfig.offershud.option.scale": "HUD Scale",

@@ -3,6 +3,7 @@
   "text.autoconfig.offershud.option.enabled": "有効",
   "text.autoconfig.offershud.option.ignoreNoProfession": "無職を無視する",
   "text.autoconfig.offershud.option.suppressVillagerHeadRolling": "村人の首振りを抑制する",
+  "text.autoconfig.offershud.option.highlightExtremePrices": "最安値・最高値を強調表示",
   "text.autoconfig.offershud.option.offsetX": "HUDのオフセット: X",
   "text.autoconfig.offershud.option.offsetY": "HUDのオフセット: Y",
   "text.autoconfig.offershud.option.scale": "HUDの倍率(大きさ)",

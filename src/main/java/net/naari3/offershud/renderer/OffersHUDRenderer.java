@@ -23,14 +23,19 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 /*? if >= 1.21 {*/
 import net.minecraft.client.DeltaTracker;
 /*?}*/
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+/*? if >= 1.21 {*/
+import net.minecraft.tags.EnchantmentTags;
+/*?}*/
 import net.minecraft.util.CommonColors;
 /*? if >= 1.21.11 {*/
 import net.minecraft.resources.Identifier;
 /*?} else {*/
 /*import net.minecraft.resources.ResourceLocation;
 *//*?}*/
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
@@ -158,9 +163,13 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
                 var secondBuy = offer.getCostB().copy();
                 var sell = offer.getResult().copy();
 
+                int firstBuyColor = config.highlightExtremePrices
+                        ? computeExtremePriceColor(offer)
+                        : COLOR_NORMAL_COST;
+
                 /*? if >= 26.1 {*/
                 context.item(firstBuy, baseX, baseY);
-                context.itemDecorations(textRenderer, firstBuy, baseX, baseY);
+                renderFirstBuyDecorations(context, textRenderer, firstBuy, baseX, baseY, firstBuyColor);
 
                 context.item(secondBuy, baseX + 20, baseY);
                 context.itemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
@@ -169,7 +178,7 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
                 context.itemDecorations(textRenderer, sell, baseX + 53, baseY);
                 /*?} else {*/
                 /*context.renderItem(firstBuy, baseX, baseY);
-                context.renderItemDecorations(textRenderer, firstBuy, baseX, baseY);
+                renderFirstBuyDecorations(context, textRenderer, firstBuy, baseX, baseY, firstBuyColor);
 
                 context.renderItem(secondBuy, baseX + 20, baseY);
                 context.renderItemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
@@ -197,6 +206,80 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
             *//*?}*/;
         });
     }
+
+    private static final int COLOR_NORMAL_COST = 0xFFFFFFFF;
+    private static final int COLOR_LOWEST_COST = 0xFF55FF55;
+    private static final int COLOR_HIGHEST_COST = 0xFFFF5555;
+
+    // Enchanted-book trades price emeralds at baseCost = (2 + rand[0..4+10k] + 3k), doubled for
+    // #double_trade_price (treasure) enchantments, capped at 64. The range bounds for a fixed level
+    // k are therefore [2+3k, 6+13k]. Spotting baseCostA at either bound flags the best/worst roll.
+    private static int computeExtremePriceColor(MerchantOffer offer) {
+        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(offer.getResult());
+        if (enchantments.size() != 1) {
+            return COLOR_NORMAL_COST;
+        }
+        var entry = enchantments.entrySet().iterator().next();
+        int level = entry.getIntValue();
+        int min = 2 + 3 * level;
+        int max = 6 + 13 * level;
+        if (isDoubleTradePrice(entry.getKey())) {
+            min *= 2;
+            max *= 2;
+        }
+        min = Math.min(min, 64);
+        max = Math.min(max, 64);
+        int base = offer.getBaseCostA().getCount();
+        if (base <= min) {
+            return COLOR_LOWEST_COST;
+        }
+        if (base >= max) {
+            return COLOR_HIGHEST_COST;
+        }
+        return COLOR_NORMAL_COST;
+    }
+
+    /*? if >= 1.21 {*/
+    private static boolean isDoubleTradePrice(Holder<Enchantment> enchantment) {
+        return enchantment.is(EnchantmentTags.DOUBLE_TRADE_PRICE);
+    }
+    /*?} else {*/
+    /*private static boolean isDoubleTradePrice(Holder<Enchantment> enchantment) {
+        return enchantment.value().isTreasureOnly();
+    }
+    *//*?}*/
+
+    /*? if >= 26.1 {*/
+    private static void renderFirstBuyDecorations(GuiGraphicsExtractor context, Font font,
+            ItemStack stack, int x, int y, int color) {
+        if (color == COLOR_NORMAL_COST) {
+            context.itemDecorations(font, stack, x, y);
+            return;
+        }
+        var decoStack = stack.copy();
+        decoStack.setCount(1);
+        context.itemDecorations(font, decoStack, x, y);
+        String countText = String.valueOf(stack.getCount());
+        int textX = x + 19 - 2 - font.width(countText);
+        int textY = y + 6 + 3;
+        context.text(font, countText, textX, textY, color);
+    }
+    /*?} else {*/
+    /*private static void renderFirstBuyDecorations(GuiGraphics context, Font font,
+            ItemStack stack, int x, int y, int color) {
+        if (color == COLOR_NORMAL_COST) {
+            context.renderItemDecorations(font, stack, x, y);
+            return;
+        }
+        var decoStack = stack.copy();
+        decoStack.setCount(1);
+        context.renderItemDecorations(font, decoStack, x, y);
+        String countText = String.valueOf(stack.getCount());
+        int textX = x + 19 - 2 - font.width(countText);
+        int textY = y + 6 + 3;
+        context.drawString(font, countText, textX, textY, color);
+    }
+    *//*?}*/
 
     // from MerchantScreen
     /*? if >= 26.1 {*/
