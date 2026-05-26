@@ -31,3 +31,7 @@ bin/
 # fabric
 
 run/
+
+# windows reserved-name junk (created when a cmd-style `>nul` redirect runs under Git Bash)
+
+/nul
