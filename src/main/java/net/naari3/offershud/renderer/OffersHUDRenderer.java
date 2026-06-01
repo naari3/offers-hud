@@ -2,6 +2,7 @@ package net.naari3.offershud.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -35,10 +36,13 @@ import net.minecraft.resources.Identifier;
 /*?} else {*/
 /*import net.minecraft.resources.ResourceLocation;
 *//*?}*/
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
+import net.naari3.offershud.TradeProfession;
 import net.naari3.offershud.config.ModConfig;
 import net.naari3.offershud.platform.Platform;
 
@@ -216,11 +220,37 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
     private static final int COLOR_LOWEST_COST = 0xFF55FF55;
     private static final int COLOR_HIGHEST_COST = 0xFFFF5555;
 
-    // Enchanted-book trades price emeralds at baseCost = (2 + rand[0..4+10k] + 3k), doubled for
-    // #double_trade_price (treasure) enchantments, capped at 64. The range bounds for a fixed level
-    // k are therefore [2+3k, 6+13k]. Spotting baseCostA at either bound flags the best/worst roll.
+    // Enchanted-equipment baseEmeraldCost keyed by (profession, item). Verified identical across
+    // 1.20.6, 1.21.x and 26.1.x vanilla VillagerTrades. The client never receives this value (it is
+    // part of the server-side trade definition), so it must be hardcoded. Rebalanced (experimental)
+    // trades use different values and are intentionally out of scope.
+    private static final Map<TradeProfession, Map<Item, Integer>> EQUIPMENT_BASE_COSTS = Map.of(
+            TradeProfession.TOOLSMITH, Map.of(
+                    Items.IRON_AXE, 1, Items.IRON_SHOVEL, 2, Items.IRON_PICKAXE, 3,
+                    Items.DIAMOND_AXE, 12, Items.DIAMOND_SHOVEL, 5, Items.DIAMOND_PICKAXE, 13),
+            TradeProfession.WEAPONSMITH, Map.of(
+                    Items.IRON_SWORD, 2, Items.DIAMOND_AXE, 12, Items.DIAMOND_SWORD, 8),
+            TradeProfession.ARMORER, Map.of(
+                    Items.DIAMOND_LEGGINGS, 14, Items.DIAMOND_BOOTS, 8,
+                    Items.DIAMOND_HELMET, 8, Items.DIAMOND_CHESTPLATE, 16),
+            TradeProfession.FISHERMAN, Map.of(Items.FISHING_ROD, 3),
+            TradeProfession.FLETCHER, Map.of(Items.BOW, 2, Items.CROSSBOW, 3),
+            TradeProfession.WANDERING_TRADER, Map.of(Items.IRON_PICKAXE, 1));
+
+    // Both enchanted books and enchanted equipment price buyA's emeralds with a level-dependent
+    // random component, so baseCostA at the low/high bound of its range flags the best/worst roll.
     private static int computeExtremePriceColor(MerchantOffer offer) {
-        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(offer.getResult());
+        var result = offer.getResult();
+        if (result.is(Items.ENCHANTED_BOOK)) {
+            return computeEnchantedBookColor(offer, result);
+        }
+        return computeEnchantedEquipmentColor(offer, result);
+    }
+
+    // Enchanted books: baseCost = (2 + rand[0..4+10k] + 3k), doubled for #double_trade_price
+    // (treasure) enchantments, capped at 64. The bounds for a fixed level k are [2+3k, 6+13k].
+    private static int computeEnchantedBookColor(MerchantOffer offer, ItemStack result) {
+        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(result);
         if (enchantments.size() != 1) {
             return COLOR_NORMAL_COST;
         }
@@ -239,6 +269,37 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
             return COLOR_LOWEST_COST;
         }
         if (base >= max) {
+            return COLOR_HIGHEST_COST;
+        }
+        return COLOR_NORMAL_COST;
+    }
+
+    // Enchanted equipment: baseCost = min(baseEmeraldCost + i, 64) with i in [5,19] and no treasure
+    // multiplier. baseEmeraldCost is not in the offer, so it is resolved from (profession, item).
+    private static int computeEnchantedEquipmentColor(MerchantOffer offer, ItemStack result) {
+        TradeProfession profession = MerchantInfo.getInfo().getTradeProfession();
+        if (profession == null) {
+            return COLOR_NORMAL_COST;
+        }
+        Map<Item, Integer> byItem = EQUIPMENT_BASE_COSTS.get(profession);
+        if (byItem == null) {
+            return COLOR_NORMAL_COST;
+        }
+        Integer baseEmeraldCost = byItem.get(result.getItem());
+        if (baseEmeraldCost == null) {
+            return COLOR_NORMAL_COST;
+        }
+        // Skip the fixed-price non-enchanted variants (e.g. fletcher's level-2 plain bow).
+        if (EnchantmentHelper.getEnchantmentsForCrafting(result).isEmpty()) {
+            return COLOR_NORMAL_COST;
+        }
+        int min = baseEmeraldCost + 5;
+        int max = Math.min(baseEmeraldCost + 19, 64);
+        int cost = offer.getBaseCostA().getCount();
+        if (cost <= min) {
+            return COLOR_LOWEST_COST;
+        }
+        if (cost >= max) {
             return COLOR_HIGHEST_COST;
         }
         return COLOR_NORMAL_COST;
