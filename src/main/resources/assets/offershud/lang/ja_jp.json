@@ -11,5 +11,10 @@
   "text.autoconfig.offershud.option.alignment.TOP_LEFT": "左上",
   "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "右上",
   "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "左下",
-  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "右下"
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "右下",
+  "text.autoconfig.offershud.option.editPosition": "HUD位置を編集",
+  "text.autoconfig.offershud.option.editPosition.button": "位置を編集…",
+  "offershud.screen.position.title": "HUD位置の編集",
+  "offershud.screen.position.hint": "HUDをドラッグして移動。矢印キーで微調整(Shiftで10px)。",
+  "offershud.screen.position.reset": "リセット"
 }

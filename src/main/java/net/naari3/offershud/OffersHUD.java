@@ -46,6 +46,7 @@ public class OffersHUD implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         init();
+        net.naari3.offershud.config.ModConfigGui.registerGui();
     }
     //?}
 
