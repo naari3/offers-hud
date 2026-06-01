@@ -94,6 +94,7 @@ public class OffersHUD implements ClientModInitializer {
                 }
             } else {
                 MerchantInfo.getInfo().setLastId(null);
+                MerchantInfo.getInfo().setTradeProfession(null);
             }
         });
 
@@ -118,6 +119,8 @@ public class OffersHUD implements ClientModInitializer {
             return null;
         }
 
+        // getUpdatableEntity guarantees a Merchant; a non-Villager Merchant is the wandering trader.
+        TradeProfession tradeProfession = TradeProfession.WANDERING_TRADER;
         if (entity instanceof Villager villager) {
             /*? if >= 1.21.5 {*/
             Holder<VillagerProfession> professionEntry = villager.getVillagerData().profession();
@@ -125,12 +128,14 @@ public class OffersHUD implements ClientModInitializer {
                     && (professionEntry.is(VillagerProfession.NONE) || professionEntry.is(VillagerProfession.NITWIT))) {
                 return null;
             }
+            tradeProfession = toTradeProfession(professionEntry);
             /*?} else {*/
             /*var profession = villager.getVillagerData().getProfession();
             if (config.ignoreNoProfession
                     && (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT)) {
                 return null;
             }
+            tradeProfession = toTradeProfession(profession);
             *//*?}*/
 
             var player = mc.player;
@@ -143,8 +148,33 @@ public class OffersHUD implements ClientModInitializer {
             }
         }
 
+        // Record the trader's profession alongside the resolved entity so the renderer can resolve
+        // the per-(profession, item) baseEmeraldCost of enchanted-equipment trades.
+        MerchantInfo.getInfo().setTradeProfession(tradeProfession);
         return entity;
     }
+
+    // Map the trader's profession to the version-independent key used by the base-cost table.
+    // Returns null for professions that have no enchanted-equipment trades.
+    /*? if >= 1.21.5 {*/
+    private static TradeProfession toTradeProfession(Holder<VillagerProfession> profession) {
+        if (profession.is(VillagerProfession.ARMORER)) return TradeProfession.ARMORER;
+        if (profession.is(VillagerProfession.WEAPONSMITH)) return TradeProfession.WEAPONSMITH;
+        if (profession.is(VillagerProfession.TOOLSMITH)) return TradeProfession.TOOLSMITH;
+        if (profession.is(VillagerProfession.FISHERMAN)) return TradeProfession.FISHERMAN;
+        if (profession.is(VillagerProfession.FLETCHER)) return TradeProfession.FLETCHER;
+        return null;
+    }
+    /*?} else {*/
+    /*private static TradeProfession toTradeProfession(VillagerProfession profession) {
+        if (profession == VillagerProfession.ARMORER) return TradeProfession.ARMORER;
+        if (profession == VillagerProfession.WEAPONSMITH) return TradeProfession.WEAPONSMITH;
+        if (profession == VillagerProfession.TOOLSMITH) return TradeProfession.TOOLSMITH;
+        if (profession == VillagerProfession.FISHERMAN) return TradeProfession.FISHERMAN;
+        if (profession == VillagerProfession.FLETCHER) return TradeProfession.FLETCHER;
+        return null;
+    }
+    *//*?}*/
 
     public static boolean getOpenWindow() {
         return OffersHUD.openWindow;

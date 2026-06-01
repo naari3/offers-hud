@@ -15,6 +15,9 @@ public class MerchantInfo {
     @Nullable
     private Integer lastId;
 
+    @Nullable
+    private TradeProfession tradeProfession;
+
     @NotNull
     private List<MerchantOffer> offers = new ArrayList<>();
 
@@ -36,5 +39,14 @@ public class MerchantInfo {
 
     public void setLastId(Integer id) {
         this.lastId = id;
+    }
+
+    @Nullable
+    public TradeProfession getTradeProfession() {
+        return this.tradeProfession;
+    }
+
+    public void setTradeProfession(@Nullable TradeProfession tradeProfession) {
+        this.tradeProfession = tradeProfession;
     }
 }
