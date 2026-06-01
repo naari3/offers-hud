@@ -107,12 +107,6 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
         RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);
         *//*?}*/
 
-        /*? if >= 26.1 {*/
-        var modelMatrices = context.pose();
-        /*?} else {*/
-        /*var modelMatrices = context.pose();
-        *//*?}*/
-
         MerchantInfo.getInfo().getLastId().ifPresent(lastId -> {
             var offers = MerchantInfo.getInfo().getOffers();
 
@@ -132,79 +126,90 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
                     screenHeight - (calcHeight(offers) * scale) - config.offsetY :
                     config.offsetY;
 
-            /*? if >= 1.21.6 {*/
-            modelMatrices.pushMatrix();
-            /*?} else {*/
-            /*modelMatrices.pushPose();
-            *//*?}*/;
-
-            /*? if >= 1.21.6 {*/
-            modelMatrices.translate(translateX, translateY);
-            /*?} else {*/
-            /*modelMatrices.translate(translateX, translateY, 1.0);
-            *//*?}*/;
-
-            /*? if >= 1.21.6 {*/
-            modelMatrices.scale(scale, scale);
-            /*?} else {*/
-            /*modelMatrices.scale(scale, scale, 1.0f);
-            *//*?}*/;
-
-            //? if <1.21.3
-            /*RenderSystem.applyModelViewMatrix();*/
-
-            var i = 0;
-
-            for (MerchantOffer offer : offers) {
-                var baseX = 0;
-                var baseY = 0 + i * 20;
-
-                var firstBuy = offer.getCostA().copy();
-                var secondBuy = offer.getCostB().copy();
-                var sell = offer.getResult().copy();
-
-                int firstBuyColor = config.highlightExtremePrices
-                        ? computeExtremePriceColor(offer)
-                        : COLOR_NORMAL_COST;
-
-                /*? if >= 26.1 {*/
-                context.item(firstBuy, baseX, baseY);
-                renderFirstBuyDecorations(context, textRenderer, firstBuy, baseX, baseY, firstBuyColor);
-
-                context.item(secondBuy, baseX + 20, baseY);
-                context.itemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
-
-                context.item(sell, baseX + 53, baseY);
-                context.itemDecorations(textRenderer, sell, baseX + 53, baseY);
-                /*?} else {*/
-                /*context.renderItem(firstBuy, baseX, baseY);
-                renderFirstBuyDecorations(context, textRenderer, firstBuy, baseX, baseY, firstBuyColor);
-
-                context.renderItem(secondBuy, baseX + 20, baseY);
-                context.renderItemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
-
-                context.renderItem(sell, baseX + 53, baseY);
-                context.renderItemDecorations(textRenderer, sell, baseX + 53, baseY);
-                *//*?}*/
-
-                this.renderArrow(context, offer, baseX + -20, baseY);
-
-                var enchantments = getEnchantmentText(offer);
-
-                /*? if >= 26.1 {*/
-                context.text(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
-                /*?} else {*/
-                /*context.drawString(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
-                *//*?}*/
-                i += 1;
-            }
-
-            /*? if >= 1.21.6 {*/
-            modelMatrices.popMatrix();
-            /*?} else {*/
-            /*modelMatrices.popPose();
-            *//*?}*/;
+            renderOffers(context, textRenderer, offers, translateX, translateY, scale, config.highlightExtremePrices);
         });
+    }
+
+    /*? if >= 26.1 {*/
+    public static void renderOffers(GuiGraphicsExtractor context, Font textRenderer, List<MerchantOffer> offers, float originX, float originY, float scale, boolean highlightExtremePrices) {
+        var modelMatrices = context.pose();
+    /*?} else {*/
+    /*public static void renderOffers(GuiGraphics context, Font textRenderer, List<MerchantOffer> offers, float originX, float originY, float scale, boolean highlightExtremePrices) {
+        var modelMatrices = context.pose();
+    *//*?}*/
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.pushMatrix();
+        /*?} else {*/
+        /*modelMatrices.pushPose();
+        *//*?}*/;
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.translate(originX, originY);
+        /*?} else {*/
+        /*modelMatrices.translate(originX, originY, 1.0);
+        *//*?}*/;
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.scale(scale, scale);
+        /*?} else {*/
+        /*modelMatrices.scale(scale, scale, 1.0f);
+        *//*?}*/;
+
+        //? if <1.21.3
+        /*RenderSystem.applyModelViewMatrix();*/
+
+        var i = 0;
+
+        for (MerchantOffer offer : offers) {
+            var baseX = 0;
+            var baseY = 0 + i * 20;
+
+            var firstBuy = offer.getCostA().copy();
+            var secondBuy = offer.getCostB().copy();
+            var sell = offer.getResult().copy();
+
+            int firstBuyColor = highlightExtremePrices
+                    ? computeExtremePriceColor(offer)
+                    : COLOR_NORMAL_COST;
+
+            /*? if >= 26.1 {*/
+            context.item(firstBuy, baseX, baseY);
+            renderFirstBuyDecorations(context, textRenderer, firstBuy, baseX, baseY, firstBuyColor);
+
+            context.item(secondBuy, baseX + 20, baseY);
+            context.itemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
+
+            context.item(sell, baseX + 53, baseY);
+            context.itemDecorations(textRenderer, sell, baseX + 53, baseY);
+            /*?} else {*/
+            /*context.renderItem(firstBuy, baseX, baseY);
+            renderFirstBuyDecorations(context, textRenderer, firstBuy, baseX, baseY, firstBuyColor);
+
+            context.renderItem(secondBuy, baseX + 20, baseY);
+            context.renderItemDecorations(textRenderer, secondBuy, baseX + 20, baseY);
+
+            context.renderItem(sell, baseX + 53, baseY);
+            context.renderItemDecorations(textRenderer, sell, baseX + 53, baseY);
+            *//*?}*/
+
+            renderArrow(context, offer, baseX + -20, baseY);
+
+            var enchantments = getEnchantmentText(offer);
+
+            /*? if >= 26.1 {*/
+            context.text(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
+            /*?} else {*/
+            /*context.drawString(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
+            *//*?}*/
+            i += 1;
+        }
+
+        /*? if >= 1.21.6 {*/
+        modelMatrices.popMatrix();
+        /*?} else {*/
+        /*modelMatrices.popPose();
+        *//*?}*/;
     }
 
     private static final int COLOR_NORMAL_COST = 0xFFFFFFFF;
@@ -283,9 +288,9 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
 
     // from MerchantScreen
     /*? if >= 26.1 {*/
-    private void renderArrow(GuiGraphicsExtractor context, MerchantOffer tradeOffer, int x, int y) {
+    private static void renderArrow(GuiGraphicsExtractor context, MerchantOffer tradeOffer, int x, int y) {
     /*?} else {*/
-    /*private void renderArrow(GuiGraphics context, MerchantOffer tradeOffer, int x, int y) {
+    /*private static void renderArrow(GuiGraphics context, MerchantOffer tradeOffer, int x, int y) {
     *//*?}*/
         if (tradeOffer.isOutOfStock()) {
             //? if >=1.21.6 {
@@ -325,7 +330,7 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
         }
     }
 
-    private String getEnchantmentText(MerchantOffer offer) {
+    private static String getEnchantmentText(MerchantOffer offer) {
         List<String> enchantments = new ArrayList<>();
 
         /*? if >= 1.21 {*/
@@ -356,7 +361,7 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
         return String.join(", ", enchantments);
     }
 
-    private int calcWidth(List<MerchantOffer> offers, Font textRenderer) {
+    public static int calcWidth(List<MerchantOffer> offers, Font textRenderer) {
         int maxWidth = 0;
         for (var offer : offers) {
             var enchantments = getEnchantmentText(offer);
@@ -368,7 +373,7 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
         return maxWidth;
     }
 
-    private int calcHeight(List<MerchantOffer> offers) {
+    public static int calcHeight(List<MerchantOffer> offers) {
         return offers.size() * 20;
     }
 }

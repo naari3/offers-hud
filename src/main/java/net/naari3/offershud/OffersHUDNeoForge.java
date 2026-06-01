@@ -20,6 +20,8 @@ public class OffersHUDNeoForge {
         // Initialize common logic
         OffersHUD.init();
 
+        net.naari3.offershud.config.ModConfigGui.registerGui();
+
         // Register config screen (NeoForge native)
         //? if >= 1.21.11 {
         container.registerExtensionPoint(IConfigScreenFactory.class,

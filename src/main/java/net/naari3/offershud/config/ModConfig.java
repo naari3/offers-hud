@@ -19,6 +19,9 @@ public class ModConfig implements ConfigData {
     public int offsetY = 5;
     public float scale = 1.0f;
 
+    // Marker field: rendered as a button (see ModConfigGui) that opens the graphical position editor.
+    public boolean editPosition = false;
+
     public enum Alignment {
         TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT;
         public boolean isRight() {

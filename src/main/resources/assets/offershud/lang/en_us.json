@@ -11,5 +11,10 @@
   "text.autoconfig.offershud.option.alignment.TOP_LEFT": "Top Left",
   "text.autoconfig.offershud.option.alignment.TOP_RIGHT": "Top Right",
   "text.autoconfig.offershud.option.alignment.BOTTOM_LEFT": "Bottom Left",
-  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "Bottom Right"
+  "text.autoconfig.offershud.option.alignment.BOTTOM_RIGHT": "Bottom Right",
+  "text.autoconfig.offershud.option.editPosition": "Edit HUD Position",
+  "text.autoconfig.offershud.option.editPosition.button": "Edit Position…",
+  "offershud.screen.position.title": "Edit HUD Position",
+  "offershud.screen.position.hint": "Drag the HUD to move it. Arrow keys to nudge (Shift = 10px).",
+  "offershud.screen.position.reset": "Reset"
 }
