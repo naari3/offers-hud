@@ -34,7 +34,11 @@ public class PositionButtonEntry extends AbstractConfigListEntry<Object> {
         super(Component.literal("editPosition"), false);
         this.button = Button.builder(buttonText, b -> {
             Minecraft mc = Minecraft.getInstance();
+            /*? if >= 26.2 {*/
+            /*mc.gui.setScreen(new OffersPositionScreen(mc.gui.screen()));
+            *//*?} else {*/
             mc.setScreen(new OffersPositionScreen(mc.screen));
+            /*?}*/
         }).bounds(0, 0, 150, 20).build();
         this.widgets = Collections.singletonList(button);
     }
