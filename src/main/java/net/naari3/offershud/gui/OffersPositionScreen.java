@@ -41,7 +41,7 @@ public class OffersPositionScreen extends Screen {
 
     private final Screen parent;
     private final ModConfig config;
-    private List<MerchantOffer> previewOffers;
+    private List<MerchantOffer> previewOffers = new java.util.ArrayList<>();
 
     // working values (committed to config only on Done)
     private ModConfig.Alignment workAlignment;
@@ -104,7 +104,11 @@ public class OffersPositionScreen extends Screen {
             // they had when built, so it would still show the old values after we save.
             // Rebuild a fresh config screen so the saved values are reflected immediately.
             Screen rebuilt = rebuiltConfigScreen(parent);
-            this.minecraft.setScreen(rebuilt != null ? rebuilt : parent);
+            /*? if >= 26.2 {*/
+            this.minecraft.gui.setScreen(rebuilt != null ? rebuilt : parent);
+            /*?} else {*/
+            /*this.minecraft.setScreen(rebuilt != null ? rebuilt : parent);
+            *//*?}*/
         }).bounds(cx - 4, by, 100, 20).build());
 
         this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, b -> onClose())
@@ -112,14 +116,18 @@ public class OffersPositionScreen extends Screen {
     }
 
     private static List<MerchantOffer> sampleOffers() {
-        List<MerchantOffer> list = new ArrayList<>();
-        list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), Optional.empty(),
-                new ItemStack(Items.DIAMOND), 12, 5, 0.05f));
-        list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.of(new ItemCost(Items.BOOK)),
-                new ItemStack(Items.ENCHANTED_BOOK), 3, 10, 0.2f));
-        list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 1), Optional.empty(),
-                new ItemStack(Items.BREAD, 6), 16, 1, 0.05f));
-        return list;
+        try {
+            List<MerchantOffer> list = new ArrayList<>();
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), Optional.empty(),
+                    new ItemStack(Items.DIAMOND), 12, 5, 0.05f));
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.of(new ItemCost(Items.BOOK)),
+                    new ItemStack(Items.ENCHANTED_BOOK), 3, 10, 0.2f));
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 1), Optional.empty(),
+                    new ItemStack(Items.BREAD, 6), 16, 1, 0.05f));
+            return list;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     private float scaledW() {
@@ -306,7 +314,11 @@ public class OffersPositionScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        /*? if >= 26.2 {*/
+        this.minecraft.gui.setScreen(parent);
+        /*?} else {*/
+        /*this.minecraft.setScreen(parent);
+        *//*?}*/
     }
 
     /**
