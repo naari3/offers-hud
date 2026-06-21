@@ -41,7 +41,7 @@ public class OffersPositionScreen extends Screen {
 
     private final Screen parent;
     private final ModConfig config;
-    private List<MerchantOffer> previewOffers;
+    private List<MerchantOffer> previewOffers = new java.util.ArrayList<>();
 
     // working values (committed to config only on Done)
     private ModConfig.Alignment workAlignment;
@@ -116,14 +116,18 @@ public class OffersPositionScreen extends Screen {
     }
 
     private static List<MerchantOffer> sampleOffers() {
-        List<MerchantOffer> list = new ArrayList<>();
-        list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), Optional.empty(),
-                new ItemStack(Items.DIAMOND), 12, 5, 0.05f));
-        list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.of(new ItemCost(Items.BOOK)),
-                new ItemStack(Items.ENCHANTED_BOOK), 3, 10, 0.2f));
-        list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 1), Optional.empty(),
-                new ItemStack(Items.BREAD, 6), 16, 1, 0.05f));
-        return list;
+        try {
+            List<MerchantOffer> list = new ArrayList<>();
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), Optional.empty(),
+                    new ItemStack(Items.DIAMOND), 12, 5, 0.05f));
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.of(new ItemCost(Items.BOOK)),
+                    new ItemStack(Items.ENCHANTED_BOOK), 3, 10, 0.2f));
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 1), Optional.empty(),
+                    new ItemStack(Items.BREAD, 6), 16, 1, 0.05f));
+            return list;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     private float scaledW() {
