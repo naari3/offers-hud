@@ -67,12 +67,12 @@ public class OffersHUD implements ClientModInitializer {
             // this fixes #35 (The screen closes when a villager crosses the crosshair)
             // see: https://github.com/naari3/offers-hud/issues/35
             /*? if >= 26.2 {*/
-            /*if (mc.gui.screen() != null)
+            if (mc.gui.screen() != null)
                 return;
-            *//*?} else {*/
-            if (mc.screen != null)
+            /*?} else {*/
+            /*if (mc.screen != null)
                 return;
-            /*?}*/
+            *//*?}*/
             var entity = getUpdatableEntity(mc);
             if (entity != null) {
                 if (MerchantInfo.getInfo().getLastId().isPresent()

@@ -105,10 +105,10 @@ public class OffersPositionScreen extends Screen {
             // Rebuild a fresh config screen so the saved values are reflected immediately.
             Screen rebuilt = rebuiltConfigScreen(parent);
             /*? if >= 26.2 {*/
-            /*this.minecraft.gui.setScreen(rebuilt != null ? rebuilt : parent);
-            *//*?} else {*/
-            this.minecraft.setScreen(rebuilt != null ? rebuilt : parent);
-            /*?}*/
+            this.minecraft.gui.setScreen(rebuilt != null ? rebuilt : parent);
+            /*?} else {*/
+            /*this.minecraft.setScreen(rebuilt != null ? rebuilt : parent);
+            *//*?}*/
         }).bounds(cx - 4, by, 100, 20).build());
 
         this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, b -> onClose())
@@ -311,10 +311,10 @@ public class OffersPositionScreen extends Screen {
     @Override
     public void onClose() {
         /*? if >= 26.2 {*/
-        /*this.minecraft.gui.setScreen(parent);
-        *//*?} else {*/
-        this.minecraft.setScreen(parent);
-        /*?}*/
+        this.minecraft.gui.setScreen(parent);
+        /*?} else {*/
+        /*this.minecraft.setScreen(parent);
+        *//*?}*/
     }
 
     /**
