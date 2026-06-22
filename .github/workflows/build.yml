@@ -16,7 +16,7 @@ jobs:
     outputs:
       versions: ${{ steps.versions.outputs.versions }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Get versions list
         id: versions
         run: |
@@ -31,14 +31,14 @@ jobs:
       matrix:
         version: ${{ fromJSON(needs.get-versions.outputs.versions) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up JDK 25
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "temurin"
           java-version: 25
       - name: Cache Gradle wrapper and dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/wrapper
@@ -46,14 +46,14 @@ jobs:
           key: ${{ runner.os }}-gradle-deps-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
           restore-keys: ${{ runner.os }}-gradle-deps-
       - name: Cache loom
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .gradle/loom-cache
           key: ${{ runner.os }}-loom-${{ matrix.version }}-${{ hashFiles(format('versions/{0}/gradle.properties', matrix.version)) }}
           restore-keys: ${{ runner.os }}-loom-${{ matrix.version }}-
       - name: Build with Gradle
         run: ./gradlew :${{ matrix.version }}:build --configure-on-demand
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: build-${{ matrix.version }}
           path: versions/${{ matrix.version }}/build/libs
