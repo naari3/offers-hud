@@ -1,11 +1,15 @@
 package net.naari3.offershud;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.Holder;
+import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.Merchant;
+import net.minecraft.world.item.trading.MerchantOffer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,6 +44,8 @@ public class OffersHUD implements ClientModInitializer {
     public static final String MODID = "offershud";
     public static final Logger logger = LogManager.getLogger(MODID);
     public static boolean openWindow = false;
+    public static List<MerchantOffer> SAMPLE_OFFERS = new ArrayList<>();
+    public static final List<String> SAMPLE_ENCHANT_TEXTS = List.of("", "Fortune III", "");
     private static ModConfig config;
 
     //? if fabric {
@@ -104,7 +110,55 @@ public class OffersHUD implements ClientModInitializer {
         });
 
         platform.registerHudRenderer(new OffersHUDRenderer());
+
+        SAMPLE_OFFERS = buildSampleOffers();
+        logger.info("Pre-generated {} sample offer(s)", SAMPLE_OFFERS.size());
     }
+
+    public static List<MerchantOffer> buildSampleOffers() {
+        try {
+            List<MerchantOffer> list = new ArrayList<>();
+            /*? if >= 26.2 {*/
+            var pred = net.minecraft.core.component.DataComponentExactPredicate.EMPTY;
+            // Holder.direct avoids "Components not bound yet" on the title screen,
+            // but ITEM_MODEL must be included so the renderer can find the model.
+            java.util.function.Function<net.minecraft.world.item.Item, net.minecraft.core.Holder<net.minecraft.world.item.Item>> h = item ->
+                net.minecraft.core.Holder.direct(item,
+                    net.minecraft.core.component.DataComponentMap.builder()
+                        .set(net.minecraft.core.component.DataComponents.ITEM_MODEL,
+                            net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item))
+                        .build());
+            var emerald = h.apply(Items.EMERALD);
+            var book = h.apply(Items.BOOK);
+            var diamond = h.apply(Items.DIAMOND);
+            var enchBook = h.apply(Items.ENCHANTED_BOOK);
+            var bread = h.apply(Items.BREAD);
+            list.add(new MerchantOffer(new ItemCost(emerald, 5, pred), Optional.empty(),
+                    new ItemStack(diamond, 1), 12, 5, 0.05f));
+            list.add(new MerchantOffer(new ItemCost(emerald, 20, pred), Optional.of(new ItemCost(book, 1, pred)),
+                    new ItemStack(enchBook, 1), 3, 10, 0.2f));
+            list.add(new MerchantOffer(new ItemCost(emerald, 1, pred), Optional.empty(),
+                    new ItemStack(bread, 6), 16, 1, 0.05f));
+            /*?} else {*/
+            /*list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), Optional.empty(),
+                    new ItemStack(Items.DIAMOND), 12, 5, 0.05f));
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.of(new ItemCost(Items.BOOK)),
+                    buildEnchantedBook(), 3, 10, 0.2f));
+            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 1), Optional.empty(),
+                    new ItemStack(Items.BREAD, 6), 16, 1, 0.05f));
+            *//*?}*/
+            return list;
+        } catch (Exception e) {
+            logger.debug("buildSampleOffers failed: {}", e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /*? if < 26.2 {*/
+    /*private static ItemStack buildEnchantedBook() {
+        return new ItemStack(Items.ENCHANTED_BOOK);
+    }
+    *//*?}*/
 
     private static Entity getUpdatableEntity(Minecraft mc) {
         if (OffersHUD.getOpenWindow()) {

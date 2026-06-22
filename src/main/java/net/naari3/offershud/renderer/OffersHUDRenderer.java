@@ -136,9 +136,17 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
 
     /*? if >= 26.1 {*/
     public static void renderOffers(GuiGraphicsExtractor context, Font textRenderer, List<MerchantOffer> offers, float originX, float originY, float scale, boolean highlightExtremePrices) {
+        renderOffers(context, textRenderer, offers, null, originX, originY, scale, highlightExtremePrices);
+    }
+
+    public static void renderOffers(GuiGraphicsExtractor context, Font textRenderer, List<MerchantOffer> offers, List<String> enchantTexts, float originX, float originY, float scale, boolean highlightExtremePrices) {
         var modelMatrices = context.pose();
     /*?} else {*/
     /*public static void renderOffers(GuiGraphics context, Font textRenderer, List<MerchantOffer> offers, float originX, float originY, float scale, boolean highlightExtremePrices) {
+        renderOffers(context, textRenderer, offers, null, originX, originY, scale, highlightExtremePrices);
+    }
+
+    public static void renderOffers(GuiGraphics context, Font textRenderer, List<MerchantOffer> offers, List<String> enchantTexts, float originX, float originY, float scale, boolean highlightExtremePrices) {
         var modelMatrices = context.pose();
     *//*?}*/
 
@@ -199,7 +207,8 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
 
             renderArrow(context, offer, baseX + -20, baseY);
 
-            var enchantments = getEnchantmentText(offer);
+            var enchantments = (enchantTexts != null && i < enchantTexts.size())
+                    ? enchantTexts.get(i) : getEnchantmentText(offer);
 
             /*? if >= 26.1 {*/
             context.text(textRenderer, enchantments, (baseX + 75), (baseY + 5), CommonColors.WHITE);
@@ -423,9 +432,14 @@ public class OffersHUDRenderer implements Platform.HudRenderer {
     }
 
     public static int calcWidth(List<MerchantOffer> offers, Font textRenderer) {
+        return calcWidth(offers, null, textRenderer);
+    }
+
+    public static int calcWidth(List<MerchantOffer> offers, List<String> enchantTexts, Font textRenderer) {
         int maxWidth = 0;
-        for (var offer : offers) {
-            var enchantments = getEnchantmentText(offer);
+        for (int i = 0; i < offers.size(); i++) {
+            var enchantments = (enchantTexts != null && i < enchantTexts.size())
+                    ? enchantTexts.get(i) : getEnchantmentText(offers.get(i));
             int width = 75 + textRenderer.width(enchantments);
             if (width > maxWidth) {
                 maxWidth = width;

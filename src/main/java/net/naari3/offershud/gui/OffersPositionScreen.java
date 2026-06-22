@@ -1,8 +1,6 @@
 package net.naari3.offershud.gui;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import me.shedaniel.autoconfig.AutoConfig;
 /*? if >= 1.21.11 {*/
@@ -22,9 +20,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 /*?}*/
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.naari3.offershud.MerchantInfo;
 import net.naari3.offershud.OffersHUD;
@@ -42,6 +37,8 @@ public class OffersPositionScreen extends Screen {
     private final Screen parent;
     private final ModConfig config;
     private List<MerchantOffer> previewOffers = new java.util.ArrayList<>();
+    private List<String> previewEnchantTexts = null;
+    private boolean sampleFailed = false;
 
     // working values (committed to config only on Done)
     private ModConfig.Alignment workAlignment;
@@ -69,8 +66,7 @@ public class OffersPositionScreen extends Screen {
 
     @Override
     protected void init() {
-        List<MerchantOffer> live = MerchantInfo.getInfo().getOffers();
-        this.previewOffers = (live != null && !live.isEmpty()) ? live : sampleOffers();
+        ensurePreviewOffers();
         recomputeTopLeftFromWork();
 
         int cx = this.width / 2;
@@ -115,27 +111,58 @@ public class OffersPositionScreen extends Screen {
                 .bounds(cx + 100, by, 100, 20).build());
     }
 
-    private static List<MerchantOffer> sampleOffers() {
-        try {
-            List<MerchantOffer> list = new ArrayList<>();
-            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 5), Optional.empty(),
-                    new ItemStack(Items.DIAMOND), 12, 5, 0.05f));
-            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 20), Optional.of(new ItemCost(Items.BOOK)),
-                    new ItemStack(Items.ENCHANTED_BOOK), 3, 10, 0.2f));
-            list.add(new MerchantOffer(new ItemCost(Items.EMERALD, 1), Optional.empty(),
-                    new ItemStack(Items.BREAD, 6), 16, 1, 0.05f));
-            return list;
-        } catch (Exception e) {
-            return new ArrayList<>();
+    private void ensurePreviewOffers() {
+        if (!previewOffers.isEmpty()) return;
+        List<MerchantOffer> live = MerchantInfo.getInfo().getOffers();
+        if (live != null && !live.isEmpty()) {
+            previewOffers = live;
+            sampleFailed = false;
+            return;
         }
+        if (sampleFailed) return;
+        // Try on-demand first (succeeds after data packs are loaded, e.g. in-world)
+        List<MerchantOffer> fresh = OffersHUD.buildSampleOffers();
+        if (!fresh.isEmpty()) {
+            previewOffers = fresh;
+            previewEnchantTexts = OffersHUD.SAMPLE_ENCHANT_TEXTS;
+            return;
+        }
+        // Fallback: pre-generated at init() time
+        if (!OffersHUD.SAMPLE_OFFERS.isEmpty()) {
+            previewOffers = OffersHUD.SAMPLE_OFFERS;
+            previewEnchantTexts = OffersHUD.SAMPLE_ENCHANT_TEXTS;
+            return;
+        }
+        sampleFailed = true;
     }
 
+    private static final int DUMMY_ROWS = 3;
+
     private float scaledW() {
-        return OffersHUDRenderer.calcWidth(previewOffers, this.font) * workScale;
+        if (previewOffers.isEmpty()) return 75 * workScale;
+        return OffersHUDRenderer.calcWidth(previewOffers, previewEnchantTexts, this.font) * workScale;
     }
 
     private float scaledH() {
+        if (previewOffers.isEmpty()) return DUMMY_ROWS * 20 * workScale;
         return OffersHUDRenderer.calcHeight(previewOffers) * workScale;
+    }
+
+    /*? if >= 26.1 {*/
+    private static void renderDummySlots(GuiGraphicsExtractor context, float originX, float originY, float scale) {
+    /*?} else {*/
+    /*private static void renderDummySlots(GuiGraphics context, float originX, float originY, float scale) {
+    *//*?}*/
+        for (int row = 0; row < DUMMY_ROWS; row++) {
+            int baseY = Math.round(originY + row * 20 * scale);
+            int sz = Math.round(16 * scale);
+            int x0 = Math.round(originX);
+            context.fill(x0, baseY, x0 + sz, baseY + sz, 0xFF666666);
+            int x1 = Math.round(originX + 20 * scale);
+            context.fill(x1, baseY, x1 + sz, baseY + sz, 0xFF555555);
+            int x2 = Math.round(originX + 53 * scale);
+            context.fill(x2, baseY, x2 + sz, baseY + sz, 0xFF444444);
+        }
     }
 
     private void recomputeTopLeftFromWork() {
@@ -173,6 +200,7 @@ public class OffersPositionScreen extends Screen {
     /*? if >= 26.1 {*/
     @Override
     public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float partialTick) {
+        ensurePreviewOffers();
         context.fill(0, 0, context.guiWidth(), context.guiHeight(), 0x88000000);
         super.extractRenderState(context, mouseX, mouseY, partialTick);
         context.centeredText(this.font, this.title.getString(), this.width / 2, 10, 0xFFFFFFFF);
@@ -184,12 +212,17 @@ public class OffersPositionScreen extends Screen {
         float sH = scaledH();
         context.fill(Math.round(curX) - 1, Math.round(curY) - 1, Math.round(curX + sW) + 1, Math.round(curY + sH) + 1,
                 boxColor());
-        OffersHUDRenderer.renderOffers(context, this.font, previewOffers, curX, curY, workScale,
-                config.highlightExtremePrices);
+        if (previewOffers.isEmpty()) {
+            renderDummySlots(context, curX, curY, workScale);
+        } else {
+            OffersHUDRenderer.renderOffers(context, this.font, previewOffers, previewEnchantTexts, curX, curY, workScale,
+                    config.highlightExtremePrices);
+        }
     }
     /*?} else {*/
     /*@Override
     public void render(GuiGraphics context, int mouseX, int mouseY, float partialTick) {
+        ensurePreviewOffers();
         context.fill(0, 0, this.width, this.height, 0x88000000);
         super.render(context, mouseX, mouseY, partialTick);
         context.drawCenteredString(this.font, this.title.getString(), this.width / 2, 10, 0xFFFFFFFF);
@@ -201,8 +234,12 @@ public class OffersPositionScreen extends Screen {
         float sH = scaledH();
         context.fill(Math.round(curX) - 1, Math.round(curY) - 1, Math.round(curX + sW) + 1, Math.round(curY + sH) + 1,
                 boxColor());
-        OffersHUDRenderer.renderOffers(context, this.font, previewOffers, curX, curY, workScale,
-                config.highlightExtremePrices);
+        if (previewOffers.isEmpty()) {
+            renderDummySlots(context, curX, curY, workScale);
+        } else {
+            OffersHUDRenderer.renderOffers(context, this.font, previewOffers, previewEnchantTexts, curX, curY, workScale,
+                    config.highlightExtremePrices);
+        }
     }
     *//*?}*/
 
