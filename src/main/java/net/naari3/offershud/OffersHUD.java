@@ -118,7 +118,7 @@ public class OffersHUD implements ClientModInitializer {
     public static List<MerchantOffer> buildSampleOffers() {
         try {
             List<MerchantOffer> list = new ArrayList<>();
-            /*? if >= 26.2 {*/
+            /*? if >= 26.1 {*/
             var pred = net.minecraft.core.component.DataComponentExactPredicate.EMPTY;
             // Holder.direct avoids "Components not bound yet" on the title screen,
             // but ITEM_MODEL must be included so the renderer can find the model.
@@ -154,7 +154,7 @@ public class OffersHUD implements ClientModInitializer {
         }
     }
 
-    /*? if < 26.2 {*/
+    /*? if < 26.1 {*/
     /*private static ItemStack buildEnchantedBook() {
         return new ItemStack(Items.ENCHANTED_BOOK);
     }
