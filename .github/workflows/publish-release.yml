@@ -82,6 +82,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag_name: ${{ github.event.release.tag_name }}
           files: ${{ steps.findjar.outputs.jar_files }}
   publish-to-mod-repos:
     runs-on: ubuntu-latest
