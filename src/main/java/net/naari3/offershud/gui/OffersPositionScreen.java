@@ -2,6 +2,7 @@ package net.naari3.offershud.gui;
 
 import java.util.List;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import me.shedaniel.autoconfig.AutoConfig;
 /*? if >= 1.21.11 {*/
 import me.shedaniel.autoconfig.AutoConfigClient;
@@ -27,12 +28,14 @@ import net.naari3.offershud.config.ModConfig;
 import net.naari3.offershud.renderer.OffersHUDRenderer;
 
 public class OffersPositionScreen extends Screen {
-    // GLFW key codes
+    /*? if < 1.21.9 {*/
+    /*// GLFW key codes
     private static final int KEY_RIGHT = 262;
     private static final int KEY_LEFT = 263;
     private static final int KEY_DOWN = 264;
     private static final int KEY_UP = 265;
     private static final int MOD_SHIFT = 0x0001;
+    *//*?}*/
 
     private final Screen parent;
     private final ModConfig config;
@@ -244,12 +247,14 @@ public class OffersPositionScreen extends Screen {
     *//*?}*/
 
     /*? if >= 1.21.9 {*/
+    // Compare against InputConstants rather than a raw number: 26.3 moved from GLFW to SDL,
+    // which renumbered the mouse buttons (left went from 0 to 1, right from 1 to 3).
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
         if (super.mouseClicked(event, doubled)) {
             return true;
         }
-        if (event.button() == 0 && inBox(event.x(), event.y())) {
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT && inBox(event.x(), event.y())) {
             dragging = true;
             grabDX = event.x() - curX;
             grabDY = event.y() - curY;
@@ -270,7 +275,7 @@ public class OffersPositionScreen extends Screen {
 
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
-        if (dragging && event.button() == 0) {
+        if (dragging && event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
             dragging = false;
             snapToCorner();
             return true;
@@ -280,14 +285,20 @@ public class OffersPositionScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        int step = (event.modifiers() & MOD_SHIFT) != 0 ? 10 : 1;
+        // Use the vanilla helpers instead of raw key codes: 26.3 moved from GLFW to SDL,
+        // so the numeric values of the arrow keys changed (e.g. RIGHT went from 262 to 79).
+        int step = event.hasShiftDown() ? 10 : 1;
         boolean handled = true;
-        switch (event.key()) {
-            case KEY_RIGHT -> curX += step;
-            case KEY_LEFT -> curX -= step;
-            case KEY_DOWN -> curY += step;
-            case KEY_UP -> curY -= step;
-            default -> handled = false;
+        if (event.isRight()) {
+            curX += step;
+        } else if (event.isLeft()) {
+            curX -= step;
+        } else if (event.isDown()) {
+            curY += step;
+        } else if (event.isUp()) {
+            curY -= step;
+        } else {
+            handled = false;
         }
         if (handled) {
             snapToCorner();
@@ -301,7 +312,7 @@ public class OffersPositionScreen extends Screen {
         if (super.mouseClicked(mouseX, mouseY, button)) {
             return true;
         }
-        if (button == 0 && inBox(mouseX, mouseY)) {
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && inBox(mouseX, mouseY)) {
             dragging = true;
             grabDX = mouseX - curX;
             grabDY = mouseY - curY;
@@ -322,7 +333,7 @@ public class OffersPositionScreen extends Screen {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (dragging && button == 0) {
+        if (dragging && button == InputConstants.MOUSE_BUTTON_LEFT) {
             dragging = false;
             snapToCorner();
             return true;
