@@ -105,6 +105,11 @@ if (isFabric) {
         }
     }
 } else {
+    // 26.3 deprecated `logoFile` in favour of `bannerFile` / `iconFile` and warns when only
+    // the old key is present. Older NeoForge versions do not know the new keys, so emit
+    // whichever one the target version actually reads.
+    processResourcesVars["mod_icon_key"] =
+        if (stonecutter.current.version >= "26.3") "iconFile" else "logoFile"
     processResourcesVars["mc_version"] = mcVersion
     processResourcesVars["mc_deps_version"] = (findProperty("mc_deps_version") ?: "[$mcVersion]").toString()
     processResourcesVars["neoforge_version_range"] = (findProperty("neoforge_version_range") ?: "[0,)").toString()
