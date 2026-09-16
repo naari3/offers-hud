@@ -11,7 +11,7 @@ authors = "naari3"
 description = '''
 Focusing on a villager will show a list of trades.
 '''
-logoFile = "assets/offershud/icon.png"
+${mod_icon_key} = "assets/offershud/icon.png"
 displayURL = "https://github.com/naari3/offers-hud"
 
 [[mixins]]
